@@ -57,7 +57,7 @@ class LoginController: UIViewController {
                     return
                 }
                 
-                print("Saved user successfully into Firebase db")
+                self.dismissViewControllerAnimated(true, completion: nil)
             })
             
         })
