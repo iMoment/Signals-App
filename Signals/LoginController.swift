@@ -9,7 +9,7 @@
 import UIKit
 
 class LoginController: UIViewController {
-    
+    // MARK: Properties
     let userInputContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.whiteColor()
@@ -65,6 +65,14 @@ class LoginController: UIViewController {
         return textField
     }()
     
+    let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "InsertImage")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .ScaleAspectFit
+        return imageView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,9 +80,11 @@ class LoginController: UIViewController {
         
         view.addSubview(userInputContainerView)
         view.addSubview(loginRegisterButton)
+        view.addSubview(profileImageView)
         
         setupUserInputContainerView()
         setupLoginRegisterButton()
+        setupProfileImageView()
     }
     
     func setupUserInputContainerView() {
@@ -129,10 +139,17 @@ class LoginController: UIViewController {
         loginRegisterButton.heightAnchor.constraintEqualToConstant(50).active = true
     }
     
+    func setupProfileImageView() {
+        // MARK: ProfileImageView constraints
+        profileImageView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
+        profileImageView.bottomAnchor.constraintEqualToAnchor(userInputContainerView.topAnchor, constant: -12).active = true
+        profileImageView.widthAnchor.constraintEqualToConstant(150).active = true
+        profileImageView.heightAnchor.constraintEqualToConstant(150).active = true
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
-    
 }
 
 
