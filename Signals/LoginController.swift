@@ -36,6 +36,13 @@ class LoginController: UIViewController {
         return textField
     }()
     
+    let nameSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,11 +63,19 @@ class LoginController: UIViewController {
         userInputContainerView.heightAnchor.constraintEqualToConstant(150).active = true
         
         userInputContainerView.addSubview(nameTextField)
+        userInputContainerView.addSubview(nameSeparatorView)
+        
         // MARK: nameTextField constraints
         nameTextField.leftAnchor.constraintEqualToAnchor(userInputContainerView.leftAnchor, constant: 12).active = true
         nameTextField.topAnchor.constraintEqualToAnchor(userInputContainerView.topAnchor).active = true
         nameTextField.widthAnchor.constraintEqualToAnchor(userInputContainerView.widthAnchor).active = true
         nameTextField.heightAnchor.constraintEqualToAnchor(userInputContainerView.heightAnchor, multiplier: 1/3).active = true
+        
+        // MARK: nameSeparatorView constraints
+        nameSeparatorView.leftAnchor.constraintEqualToAnchor(userInputContainerView.leftAnchor).active = true
+        nameSeparatorView.topAnchor.constraintEqualToAnchor(nameTextField.bottomAnchor).active = true
+        nameSeparatorView.widthAnchor.constraintEqualToAnchor(userInputContainerView.widthAnchor).active = true
+        nameSeparatorView.heightAnchor.constraintEqualToConstant(1).active = true
         
     }
     
