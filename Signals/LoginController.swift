@@ -4,7 +4,6 @@
 //
 //  Created by Stanley Pan on 8/14/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-//
 
 import UIKit
 import Firebase
@@ -37,6 +36,7 @@ class LoginController: UIViewController {
             print("Form is not valid.  Authentication failed.")
             return
         }
+        
         FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
             if error != nil {
                 print(error)
@@ -107,6 +107,14 @@ class LoginController: UIViewController {
         return imageView
     }()
     
+    let loginRegisterSegmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl(items: ["Login", "Register"])
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.tintColor = UIColor.whiteColor()
+        segmentedControl.selectedSegmentIndex = 1
+        return segmentedControl
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -115,10 +123,12 @@ class LoginController: UIViewController {
         view.addSubview(userInputContainerView)
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
+        view.addSubview(loginRegisterSegmentedControl)
         
         setupUserInputContainerView()
         setupLoginRegisterButton()
         setupProfileImageView()
+        setupLoginRegisterSegmentedControl()
     }
     
     func setupUserInputContainerView() {
@@ -176,9 +186,17 @@ class LoginController: UIViewController {
     func setupProfileImageView() {
         // MARK: ProfileImageView constraints
         profileImageView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
-        profileImageView.bottomAnchor.constraintEqualToAnchor(userInputContainerView.topAnchor, constant: -12).active = true
+        profileImageView.bottomAnchor.constraintEqualToAnchor(loginRegisterSegmentedControl.topAnchor, constant: -12).active = true
         profileImageView.widthAnchor.constraintEqualToConstant(150).active = true
         profileImageView.heightAnchor.constraintEqualToConstant(150).active = true
+    }
+    
+    func setupLoginRegisterSegmentedControl() {
+        // MARK: LoginRegisterSegmentedControl constraints
+        loginRegisterSegmentedControl.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
+        loginRegisterSegmentedControl.bottomAnchor.constraintEqualToAnchor(userInputContainerView.topAnchor, constant: -12).active = true
+        loginRegisterSegmentedControl.widthAnchor.constraintEqualToAnchor(userInputContainerView.widthAnchor).active = true
+        loginRegisterSegmentedControl.heightAnchor.constraintEqualToConstant(50).active = true
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
