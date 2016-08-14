@@ -27,9 +27,35 @@ class LoginController: UIViewController {
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         button.titleLabel?.font = UIFont.boldSystemFontOfSize(16)
         
-        button.addTarget(self, action: #selector(handleRegister), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(handleLoginRegister), forControlEvents: .TouchUpInside)
         return button
     }()
+    
+    func handleLoginRegister() {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            handleLogin()
+        } else {
+            handleRegister()
+        }
+    }
+    
+    func handleLogin() {
+        guard let email = emailTextField.text, password = passwordTextField.text else {
+            print("Form is not valid.  Authentication failed.")
+            return
+        }
+        
+        FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
+            if error != nil {
+                print(error)
+                return
+            }
+            
+            // Successfully logged in user
+            self.dismissViewControllerAnimated(true, completion: nil)
+            
+        })
+    }
     
     func handleRegister() {
         guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
