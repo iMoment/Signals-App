@@ -6,6 +6,7 @@
 //  Copyright © 2016 Stanley Pan. All rights reserved.
 
 import UIKit
+import Firebase
 
 class ViewController: UITableViewController {
 
