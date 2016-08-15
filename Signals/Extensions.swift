@@ -15,7 +15,7 @@ extension UIImageView {
         
         self.image = nil
         
-        // TODO: Check cache for image first
+        // Check cache for image first
         if let cachedImage = imageCache.objectForKey(urlString) as? UIImage {
             self.image = cachedImage
             return

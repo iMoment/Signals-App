@@ -31,16 +31,23 @@ class MessagesController: UITableViewController {
         if FIRAuth.auth()?.currentUser?.uid == nil {
             performSelector(#selector(handleLogout), withObject: nil, afterDelay: 0)
         } else {
-            let uid = FIRAuth.auth()?.currentUser?.uid
-            FIRDatabase.database().reference().child("users").child(uid!).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                
-                print(snapshot)
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    self.navigationItem.title = dictionary["name"] as? String
-                }
-                
-                }, withCancelBlock: nil)
+            fetchUserAndSetNavBarTitle()
         }
+    }
+    
+    func fetchUserAndSetNavBarTitle() {
+        
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
+        
+        FIRDatabase.database().reference().child("users").child(uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                self.navigationItem.title = dictionary["name"] as? String
+            }
+            
+            }, withCancelBlock: nil)
     }
     
     func handleLogout() {
@@ -51,6 +58,21 @@ class MessagesController: UITableViewController {
         }
         
         let loginController = LoginController()
+        loginController.messagesController = self
         presentViewController(loginController, animated: true, completion: nil)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
