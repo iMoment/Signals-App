@@ -6,8 +6,60 @@
 //  Copyright © 2016 Stanley Pan. All rights reserved.
 
 import UIKit
+import Firebase
 
 extension LoginController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func handleRegister() {
+        guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
+            print("Form is not valid.  Authentication failed.")
+            return
+        }
+        
+        FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
+            if error != nil {
+                print(error)
+                return
+            }
+            
+            guard let uid = user?.uid else {
+                return
+            }
+            
+            // Successfully authenticated user
+            let storageRef = FIRStorage.storage().reference().child("myImage.png")
+            
+            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
+                storageRef.putData(uploadData, metadata: nil, completion: { (metaData, error) in
+                    
+                    if error != nil {
+                        print(error)
+                        return
+                    }
+                    
+                    if let profileImageUrl = metaData?.downloadURL()?.absoluteString {
+                        
+                        let values = ["name": name, "email": email, "profileImageUrl": profileImageUrl]
+                        
+                        self.registerUserIntoDatabaseWithUID(uid, values: values)
+                    }
+                })
+            }
+        })
+    }
+    
+    private func registerUserIntoDatabaseWithUID(uid: String, values: [String:AnyObject]) {
+        let ref = FIRDatabase.database().referenceFromURL("https://signals-a7699.firebaseio.com/")
+        let usersReference = ref.child("users").child(uid)
+        usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+            if err != nil {
+                print(err)
+                return
+            }
+            
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
+    }
     
     func handleSelectProfileImage() {
         let picker = UIImagePickerController()
