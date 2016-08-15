@@ -12,11 +12,15 @@ class NewMessageController: UITableViewController {
     // MARK: Properties
     let cellId = "cellId"
     
+    var users = [User]()
+    
     // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(handleCancel))
+        
+        tableView.registerClass(UserCell.self, forCellReuseIdentifier: cellId)
         
         fetchUser()
     }
@@ -24,7 +28,15 @@ class NewMessageController: UITableViewController {
     func fetchUser() {
         FIRDatabase.database().reference().child("users").observeEventType(.ChildAdded, withBlock: { (snapshot) in
             
-            print(snapshot)
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let user = User()
+                user.setValuesForKeysWithDictionary(dictionary)
+                self.users.append(user)
+                
+                dispatch_async(dispatch_get_main_queue(), { 
+                    self.tableView.reloadData()
+                })
+            }
             
             }, withCancelBlock: nil)
     }
@@ -34,14 +46,38 @@ class NewMessageController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return users.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellId)
         
-        cell.textLabel?.text = "Placeholder Text For Now"
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath)
+        
+        let user = users[indexPath.row]
+        cell.textLabel?.text = user.name
+        cell.detailTextLabel?.text = user.email
         
         return cell
     }
 }
+
+class UserCell: UITableViewCell {
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+
+
+
+
+
+
+
+
