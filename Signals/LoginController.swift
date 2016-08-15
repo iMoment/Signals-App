@@ -50,7 +50,6 @@ class LoginController: UIViewController {
                 print(error)
                 return
             }
-            
             // Successfully logged in user
             self.dismissViewControllerAnimated(true, completion: nil)
         })
