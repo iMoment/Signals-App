@@ -20,6 +20,7 @@
 		9166B9E31D607461003475B6 /* SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9166B9E21D607461003475B6 /* SignalsTests.swift */; };
 		9166B9EE1D607461003475B6 /* SignalsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9166B9ED1D607461003475B6 /* SignalsUITests.swift */; };
 		9166B9FD1D607BF9003475B6 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9166B9FC1D607BF9003475B6 /* LoginController.swift */; };
+		91B6B8BC1D61DD1100AB9BFF /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B6B8BB1D61DD1100AB9BFF /* LoginController+handlers.swift */; };
 		91C9F4551D61C73A009752E8 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C9F4541D61C73A009752E8 /* NewMessageController.swift */; };
 		91C9F4581D61D0C8009752E8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C9F4571D61D0C8009752E8 /* User.swift */; };
 		DD4827B68147A46CF1473E74 /* libPods-SignalsUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1B8B0D1BE5FB41C2CA9D556 /* libPods-SignalsUITests.a */; };
@@ -63,6 +64,7 @@
 		9166B9ED1D607461003475B6 /* SignalsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalsUITests.swift; sourceTree = "<group>"; };
 		9166B9EF1D607461003475B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9166B9FC1D607BF9003475B6 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		91B6B8BB1D61DD1100AB9BFF /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		91C9F4541D61C73A009752E8 /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		91C9F4571D61D0C8009752E8 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		953E64509E11F30043AC7463 /* Pods_Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +162,7 @@
 				9166B9FC1D607BF9003475B6 /* LoginController.swift */,
 				9166B9CF1D607461003475B6 /* MessagesController.swift */,
 				91C9F4541D61C73A009752E8 /* NewMessageController.swift */,
+				91B6B8BB1D61DD1100AB9BFF /* LoginController+handlers.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -465,6 +468,7 @@
 			files = (
 				91C9F4551D61C73A009752E8 /* NewMessageController.swift in Sources */,
 				9166B9D01D607461003475B6 /* MessagesController.swift in Sources */,
+				91B6B8BC1D61DD1100AB9BFF /* LoginController+handlers.swift in Sources */,
 				9166B9FD1D607BF9003475B6 /* LoginController.swift in Sources */,
 				91C9F4581D61D0C8009752E8 /* User.swift in Sources */,
 				9166B9CE1D607461003475B6 /* AppDelegate.swift in Sources */,
