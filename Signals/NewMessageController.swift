@@ -57,7 +57,8 @@ class NewMessageController: UITableViewController {
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
         
-        cell.imageView?.image = UIImage(named: "InsertImage")
+//        cell.imageView?.image = UIImage(named: "InsertImage")
+//        cell.imageView?.contentMode = .ScaleAspectFill
 
         if let profileImageUrl = user.profileImageUrl {
             let url = NSURL(string: profileImageUrl)
@@ -69,7 +70,7 @@ class NewMessageController: UITableViewController {
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), { 
-                    cell.imageView?.image = UIImage(data: data!)
+//                    cell.imageView?.image = UIImage(data: data!)
                 })
                 
             }).resume()
@@ -81,8 +82,33 @@ class NewMessageController: UITableViewController {
 
 class UserCell: UITableViewCell {
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        textLabel?.frame = CGRectMake(56, textLabel!.frame.origin.y, textLabel!.frame.width, textLabel!.frame.height)
+        
+        detailTextLabel?.frame = CGRectMake(56, detailTextLabel!.frame.origin.y, detailTextLabel!.frame.width, detailTextLabel!.frame.height)
+    }
+    
+    let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "InsertImage")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 20
+        imageView.layer.masksToBounds = true
+        return imageView
+    }()
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+        
+        addSubview(profileImageView)
+        
+        // iOS 9 constraint anchors
+        profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
+        profileImageView.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
+        profileImageView.widthAnchor.constraintEqualToConstant(40).active = true
+        profileImageView.widthAnchor.constraintEqualToConstant(40).active = true
     }
     
     required init?(coder aDecoder: NSCoder) {
