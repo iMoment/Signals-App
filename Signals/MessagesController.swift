@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 
 class MessagesController: UITableViewController {
+    
     // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,7 +18,6 @@ class MessagesController: UITableViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: #selector(handleNewMessage))
         
-        // User is not logged in
         checkIfUserIsLoggedIn()
     }
     
@@ -44,10 +44,28 @@ class MessagesController: UITableViewController {
         FIRDatabase.database().reference().child("users").child(uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
-                self.navigationItem.title = dictionary["name"] as? String
+                
+                let user = User()
+                user.setValuesForKeysWithDictionary(dictionary)
+                self.setupNavBarWithUser(user)
             }
             
             }, withCancelBlock: nil)
+    }
+    
+    func setupNavBarWithUser(user: User) {
+        let titleView = UIView()
+        titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+        titleView.backgroundColor = UIColor.redColor()
+        
+        let profileImageView = UIImageView()
+        if let profileImageUrl = user.profileImageUrl {
+            profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+        }
+        
+        titleView.addSubview(profileImageView)
+        
+        self.navigationItem.titleView = titleView
     }
     
     func handleLogout() {

@@ -28,9 +28,9 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             // Successfully authenticated user
             let imageName = NSUUID().UUIDString
-            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).png")
+            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
-            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
+            if let profileImage = self.profileImageView.image, uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
                 storageRef.putData(uploadData, metadata: nil, completion: { (metaData, error) in
                     
                     if error != nil {
@@ -53,6 +53,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         let ref = FIRDatabase.database().referenceFromURL("https://signals-a7699.firebaseio.com/")
         let usersReference = ref.child("users").child(uid)
         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+            
             if err != nil {
                 print(err)
                 return
