@@ -59,11 +59,33 @@ class MessagesController: UITableViewController {
         titleView.backgroundColor = UIColor.redColor()
         
         let profileImageView = UIImageView()
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.contentMode = .ScaleAspectFill
+        profileImageView.layer.cornerRadius = 20
+        profileImageView.clipsToBounds = true
+        
         if let profileImageUrl = user.profileImageUrl {
             profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
         }
         
+        let nameLabel = UILabel()
+        nameLabel.text = user.name
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         titleView.addSubview(profileImageView)
+        titleView.addSubview(nameLabel)
+        
+        // iOS 9 constraint anchors
+        profileImageView.leftAnchor.constraintEqualToAnchor(titleView.leftAnchor).active = true
+        profileImageView.centerYAnchor.constraintEqualToAnchor(titleView.centerYAnchor).active = true
+        profileImageView.widthAnchor.constraintEqualToConstant(40).active = true
+        profileImageView.heightAnchor.constraintEqualToConstant(40).active = true
+        
+        // iOS 9 constraint anchors
+        nameLabel.leftAnchor.constraintEqualToAnchor(profileImageView.rightAnchor, constant: 8).active = true
+        nameLabel.centerYAnchor.constraintEqualToAnchor(profileImageView.centerYAnchor).active = true
+        nameLabel.rightAnchor.constraintEqualToAnchor(titleView.rightAnchor).active = true
+        nameLabel.heightAnchor.constraintEqualToAnchor(profileImageView.heightAnchor).active = true
         
         self.navigationItem.titleView = titleView
     }
