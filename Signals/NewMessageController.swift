@@ -51,32 +51,35 @@ class NewMessageController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! UserCell
         
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
-        
-//        cell.imageView?.image = UIImage(named: "InsertImage")
-//        cell.imageView?.contentMode = .ScaleAspectFill
 
         if let profileImageUrl = user.profileImageUrl {
-            let url = NSURL(string: profileImageUrl)
-            NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler: { (data, response, error) in
-                
-                if error != nil {
-                    print(error)
-                    return
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), { 
-//                    cell.imageView?.image = UIImage(data: data!)
-                })
-                
-            }).resume()
+            
+            cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+//            let url = NSURL(string: profileImageUrl)
+//            NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler: { (data, response, error) in
+//                
+//                if error != nil {
+//                    print(error)
+//                    return
+//                }
+//                
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    cell.profileImageView.image = UIImage(data: data!)
+//                })
+//                
+//            }).resume()
         }
         
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 56
     }
 }
 
@@ -85,14 +88,13 @@ class UserCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        textLabel?.frame = CGRectMake(56, textLabel!.frame.origin.y, textLabel!.frame.width, textLabel!.frame.height)
+        textLabel?.frame = CGRectMake(56, textLabel!.frame.origin.y - 2, textLabel!.frame.width, textLabel!.frame.height)
         
-        detailTextLabel?.frame = CGRectMake(56, detailTextLabel!.frame.origin.y, detailTextLabel!.frame.width, detailTextLabel!.frame.height)
+        detailTextLabel?.frame = CGRectMake(56, detailTextLabel!.frame.origin.y + 2, detailTextLabel!.frame.width, detailTextLabel!.frame.height)
     }
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "InsertImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 20
         imageView.layer.masksToBounds = true
@@ -108,7 +110,7 @@ class UserCell: UITableViewCell {
         profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
         profileImageView.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
         profileImageView.widthAnchor.constraintEqualToConstant(40).active = true
-        profileImageView.widthAnchor.constraintEqualToConstant(40).active = true
+        profileImageView.heightAnchor.constraintEqualToConstant(40).active = true
     }
     
     required init?(coder aDecoder: NSCoder) {
