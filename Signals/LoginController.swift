@@ -5,11 +5,13 @@
 //  Created by Stanley Pan on 8/14/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
 
+//
+//  LoginController to handle Logging In or Registering a User
 import UIKit
 import Firebase
 
 class LoginController: UIViewController {
-    // MARK: Properties
+    
     var messagesController: MessagesController?
     
     let userInputContainerView: UIView = {
@@ -18,6 +20,7 @@ class LoginController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         view.layer.masksToBounds = true
+        
         return view
     }()
     
@@ -28,8 +31,8 @@ class LoginController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         button.titleLabel?.font = UIFont.boldSystemFontOfSize(18)
-        
         button.addTarget(self, action: #selector(handleLoginRegister), forControlEvents: .TouchUpInside)
+        
         return button
     }()
     
@@ -48,11 +51,12 @@ class LoginController: UIViewController {
         }
         
         FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
+            
             if error != nil {
                 print(error)
                 return
             }
-            // Successfully logged in user
+            //  Successfully logged in User
             self.messagesController?.fetchUserAndSetNavBarTitle()
             
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -63,6 +67,7 @@ class LoginController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Name"
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
         return textField
     }()
     
@@ -70,6 +75,7 @@ class LoginController: UIViewController {
         let view = UIView()
         view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
         view.translatesAutoresizingMaskIntoConstraints = false
+        
         return view
     }()
     
@@ -77,6 +83,7 @@ class LoginController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Email address"
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
         return textField
     }()
     
@@ -84,6 +91,7 @@ class LoginController: UIViewController {
         let view = UIView()
         view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
         view.translatesAutoresizingMaskIntoConstraints = false
+        
         return view
     }()
     
@@ -92,6 +100,7 @@ class LoginController: UIViewController {
         textField.placeholder = "Password"
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.secureTextEntry = true
+        
         return textField
     }()
     
@@ -100,10 +109,9 @@ class LoginController: UIViewController {
         imageView.image = UIImage(named: "InsertImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .ScaleAspectFit
-        
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImage)))
         imageView.userInteractionEnabled = true
-            
+        
         return imageView
     }()
     
@@ -113,14 +121,15 @@ class LoginController: UIViewController {
         segmentedControl.tintColor = UIColor.whiteColor()
         segmentedControl.selectedSegmentIndex = 1
         segmentedControl.addTarget(self, action: #selector(handleLoginRegisterChange), forControlEvents: .ValueChanged)
+        
         return segmentedControl
     }()
     
+    //  Toggles userInputContainerView according to loginRegisterSegmentedControl value
     func handleLoginRegisterChange() {
         let title = loginRegisterSegmentedControl.titleForSegmentAtIndex(loginRegisterSegmentedControl.selectedSegmentIndex)
         loginRegisterButton.setTitle(title, forState: .Normal)
         
-        // Change height of userInputContainerView
         userInputContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
         
         nameTextFieldHeightAnchor?.active = false
@@ -136,6 +145,7 @@ class LoginController: UIViewController {
         passwordTextFieldHeightAnchor?.active = true
 
     }
+    
     // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()

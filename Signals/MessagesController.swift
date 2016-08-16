@@ -5,6 +5,8 @@
 //  Created by Stanley Pan on 8/14/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
 
+//
+//  MessagesController to display ongoing conversations
 import UIKit
 import Firebase
 
@@ -23,6 +25,8 @@ class MessagesController: UITableViewController {
         observeMessages()
     }
     
+    var messages = [Message]()
+    
     func observeMessages() {
         let ref = FIRDatabase.database().reference().child("messages")
         ref.observeEventType(.ChildAdded, withBlock: { (snapshot) in
@@ -30,10 +34,28 @@ class MessagesController: UITableViewController {
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let message = Message()
                 message.setValuesForKeysWithDictionary(dictionary)
-                print(message.text)
+                self.messages.append(message)
+                
+                dispatch_async(dispatch_get_main_queue(), { 
+                    self.tableView.reloadData()
+                })
             }
           
             }, withCancelBlock: nil)
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "cellId")
+        
+        let message = messages[indexPath.row]
+        cell.textLabel?.text = message.toRecipientID
+        cell.detailTextLabel?.text = message.text
+        
+        return cell
     }
     
     func handleNewMessage() {
@@ -93,13 +115,12 @@ class MessagesController: UITableViewController {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(nameLabel)
         
-        // iOS 9 constraint anchors
+        // MARK: Constraint anchors
         profileImageView.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor).active = true
         profileImageView.centerYAnchor.constraintEqualToAnchor(containerView.centerYAnchor).active = true
         profileImageView.widthAnchor.constraintEqualToConstant(40).active = true
         profileImageView.heightAnchor.constraintEqualToConstant(40).active = true
         
-        // iOS 9 constraint anchors
         nameLabel.leftAnchor.constraintEqualToAnchor(profileImageView.rightAnchor, constant: 8).active = true
         nameLabel.centerYAnchor.constraintEqualToAnchor(profileImageView.centerYAnchor).active = true
         nameLabel.rightAnchor.constraintEqualToAnchor(containerView.rightAnchor).active = true
@@ -129,17 +150,3 @@ class MessagesController: UITableViewController {
         presentViewController(loginController, animated: true, completion: nil)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

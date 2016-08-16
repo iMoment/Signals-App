@@ -5,6 +5,8 @@
 //  Created by Stanley Pan on 8/16/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
 
+//
+//  ChatLogController handles view of present conversation with User
 import UIKit
 import Firebase
 
@@ -21,6 +23,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         textField.placeholder = "Enter message..."
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
+        
         return textField
     }()
     
@@ -87,26 +90,3 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         return true
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

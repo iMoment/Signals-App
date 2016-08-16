@@ -5,13 +5,14 @@
 //  Created by Stanley Pan on 8/15/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
 
+//
+//  NewMessageController for selecting a User and creating a new chat log
 import UIKit
 import Firebase
 
 class NewMessageController: UITableViewController {
-    // MARK: Properties
-    let cellId = "cellId"
     
+    let cellId = "cellId"
     var users = [User]()
     
     // MARK: viewDidLoad
@@ -80,9 +81,6 @@ class NewMessageController: UITableViewController {
             self.messagesController?.showChatControllerForUser(user)
         }
     }
-    
-    
-    
 }
 
 class UserCell: UITableViewCell {
@@ -101,6 +99,7 @@ class UserCell: UITableViewCell {
         imageView.layer.cornerRadius = 24
         imageView.layer.masksToBounds = true
         imageView.contentMode = .ScaleAspectFill
+        
         return imageView
     }()
     
@@ -120,13 +119,3 @@ class UserCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-
-
-
-
-
-
-
-
-

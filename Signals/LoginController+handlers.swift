@@ -5,6 +5,8 @@
 //  Created by Stanley Pan on 8/15/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
 
+//
+//  LoginController extension holding key functions
 import UIKit
 import Firebase
 
@@ -17,6 +19,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         }
         
         FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
+            
             if error != nil {
                 print(error)
                 return
