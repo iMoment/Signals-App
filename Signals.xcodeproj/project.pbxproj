@@ -20,6 +20,7 @@
 		9166B9E31D607461003475B6 /* SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9166B9E21D607461003475B6 /* SignalsTests.swift */; };
 		9166B9EE1D607461003475B6 /* SignalsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9166B9ED1D607461003475B6 /* SignalsUITests.swift */; };
 		9166B9FD1D607BF9003475B6 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9166B9FC1D607BF9003475B6 /* LoginController.swift */; };
+		918160101D636E8800EB99F0 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9181600F1D636E8800EB99F0 /* UserCell.swift */; };
 		918B15521D63229E00A38B48 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918B15511D63229E00A38B48 /* ChatLogController.swift */; };
 		918B15541D63456200A38B48 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918B15531D63456200A38B48 /* Message.swift */; };
 		91B6B8BC1D61DD1100AB9BFF /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B6B8BB1D61DD1100AB9BFF /* LoginController+handlers.swift */; };
@@ -67,6 +68,7 @@
 		9166B9ED1D607461003475B6 /* SignalsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalsUITests.swift; sourceTree = "<group>"; };
 		9166B9EF1D607461003475B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9166B9FC1D607BF9003475B6 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		9181600F1D636E8800EB99F0 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		918B15511D63229E00A38B48 /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		918B15531D63456200A38B48 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		91B6B8BB1D61DD1100AB9BFF /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		9166B9CC1D607461003475B6 /* Signals */ = {
 			isa = PBXGroup;
 			children = (
+				9181600E1D636E4C00EB99F0 /* View */,
 				91B6B8BD1D621A7B00AB9BFF /* Helpers */,
 				91C9F4561D61D08D009752E8 /* Model */,
 				9166B9FB1D607B96003475B6 /* Controller */,
@@ -173,6 +176,14 @@
 				918B15511D63229E00A38B48 /* ChatLogController.swift */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		9181600E1D636E4C00EB99F0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9181600F1D636E8800EB99F0 /* UserCell.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		91B6B8BD1D621A7B00AB9BFF /* Helpers */ = {
@@ -491,6 +502,7 @@
 				9166B9FD1D607BF9003475B6 /* LoginController.swift in Sources */,
 				91C9F4581D61D0C8009752E8 /* User.swift in Sources */,
 				9166B9CE1D607461003475B6 /* AppDelegate.swift in Sources */,
+				918160101D636E8800EB99F0 /* UserCell.swift in Sources */,
 				91B6B8BF1D621ACE00AB9BFF /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

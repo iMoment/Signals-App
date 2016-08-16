@@ -52,7 +52,18 @@ class MessagesController: UITableViewController {
         let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "cellId")
         
         let message = messages[indexPath.row]
-        cell.textLabel?.text = message.toRecipientID
+        
+        if let toRecipientID = message.toRecipientID {
+            let ref = FIRDatabase.database().reference().child("users").child(toRecipientID)
+            ref.observeEventType(.Value, withBlock: { (snapshot) in
+                
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    cell.textLabel?.text = dictionary["name"] as? String
+                }
+                
+                }, withCancelBlock: nil)
+        }
+        
         cell.detailTextLabel?.text = message.text
         
         return cell
