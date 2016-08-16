@@ -30,6 +30,7 @@ class MessagesController: UITableViewController {
     }
     
     var messages = [Message]()
+    var messageDictionary = [String: Message]()
     
     func observeMessages() {
         let ref = FIRDatabase.database().reference().child("messages")
@@ -38,7 +39,13 @@ class MessagesController: UITableViewController {
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let message = Message()
                 message.setValuesForKeysWithDictionary(dictionary)
-                self.messages.append(message)
+                //self.messages.append(message)
+                
+                if let toRecipientID = message.toRecipientID {
+                    self.messageDictionary[toRecipientID] = message
+                    
+                    self.messages = Array(self.messageDictionary.values)
+                }
                 
                 dispatch_async(dispatch_get_main_queue(), { 
                     self.tableView.reloadData()
