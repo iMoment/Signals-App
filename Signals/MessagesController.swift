@@ -12,6 +12,8 @@ import Firebase
 
 class MessagesController: UITableViewController {
     
+    let cellId = "cellId"
+    
     // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +23,8 @@ class MessagesController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: #selector(handleNewMessage))
         
         checkIfUserIsLoggedIn()
+        
+        tableView.registerClass(UserCell.self, forCellReuseIdentifier: cellId)
         
         observeMessages()
     }
@@ -49,7 +53,8 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "cellId")
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! UserCell
         
         let message = messages[indexPath.row]
         
@@ -59,6 +64,10 @@ class MessagesController: UITableViewController {
                 
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     cell.textLabel?.text = dictionary["name"] as? String
+                    
+                    if let profileImageUrl = dictionary["profileImageUrl"] as? String {
+                        cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+                    }
                 }
                 
                 }, withCancelBlock: nil)
@@ -67,6 +76,10 @@ class MessagesController: UITableViewController {
         cell.detailTextLabel?.text = message.text
         
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 72
     }
     
     func handleNewMessage() {
