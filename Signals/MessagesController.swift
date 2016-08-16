@@ -57,23 +57,7 @@ class MessagesController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! UserCell
         
         let message = messages[indexPath.row]
-        
-        if let toRecipientID = message.toRecipientID {
-            let ref = FIRDatabase.database().reference().child("users").child(toRecipientID)
-            ref.observeEventType(.Value, withBlock: { (snapshot) in
-                
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    cell.textLabel?.text = dictionary["name"] as? String
-                    
-                    if let profileImageUrl = dictionary["profileImageUrl"] as? String {
-                        cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
-                    }
-                }
-                
-                }, withCancelBlock: nil)
-        }
-        
-        cell.detailTextLabel?.text = message.text
+        cell.message = message
         
         return cell
     }
