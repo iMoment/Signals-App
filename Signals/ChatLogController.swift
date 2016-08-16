@@ -6,8 +6,16 @@
 //  Copyright © 2016 Stanley Pan. All rights reserved.
 
 import UIKit
+import Firebase
 
 class ChatLogController: UICollectionViewController {
+    
+    let inputTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Enter message..."
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
     
     // MARK: viewDidLoad
     override func viewDidLoad() {
@@ -33,6 +41,7 @@ class ChatLogController: UICollectionViewController {
         let sendButton = UIButton(type: .System)
         sendButton.setTitle("Send", forState: .Normal)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
+        sendButton.addTarget(self, action: #selector(handleSendMessage), forControlEvents: .TouchUpInside)
         containerView.addSubview(sendButton)
         
         sendButton.rightAnchor.constraintEqualToAnchor(containerView.rightAnchor).active = true
@@ -40,15 +49,29 @@ class ChatLogController: UICollectionViewController {
         sendButton.widthAnchor.constraintEqualToConstant(80).active = true
         sendButton.heightAnchor.constraintEqualToAnchor(containerView.heightAnchor).active = true
         
-        let inputTextField = UITextField()
-        inputTextField.placeholder = "Enter message..."
-        inputTextField.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(inputTextField)
         
         inputTextField.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor, constant: 8).active = true
         inputTextField.centerYAnchor.constraintEqualToAnchor(containerView.centerYAnchor).active = true
         inputTextField.rightAnchor.constraintEqualToAnchor(sendButton.leftAnchor).active = true
         inputTextField.heightAnchor.constraintEqualToAnchor(containerView.heightAnchor).active = true
+        
+        let separatorLineView = UIView()
+        separatorLineView.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        separatorLineView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(separatorLineView)
+        
+        separatorLineView.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor).active = true
+        separatorLineView.topAnchor.constraintEqualToAnchor(containerView.topAnchor).active = true
+        separatorLineView.widthAnchor.constraintEqualToAnchor(containerView.widthAnchor).active = true
+        separatorLineView.heightAnchor.constraintEqualToConstant(1).active = true
+    }
+    
+    func handleSendMessage() {
+        
+        let ref = FIRDatabase.database().reference().child("messages")
+        let values = ["text": inputTextField.text!]
+        ref.updateChildValues(values)
     }
 }
 
