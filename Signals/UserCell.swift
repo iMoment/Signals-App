@@ -30,6 +30,15 @@ class UserCell: UITableViewCell {
             }
             
             detailTextLabel?.text = message?.text
+            
+            if let seconds = message?.timestamp?.doubleValue {
+                let timestampDate = NSDate(timeIntervalSince1970: seconds)
+                
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "hh:mm:ss a"
+                timeLabel.text = dateFormatter.stringFromDate(timestampDate)
+            }
+            
         }
     }
     
@@ -51,16 +60,32 @@ class UserCell: UITableViewCell {
         return imageView
     }()
     
+    let timeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "HH:MM:SS"
+        label.font = UIFont.systemFontOfSize(13)
+        label.textColor = UIColor.darkGrayColor()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
         
         addSubview(profileImageView)
+        addSubview(timeLabel)
         
         // iOS 9 constraint anchors
         profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
         profileImageView.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
         profileImageView.widthAnchor.constraintEqualToConstant(48).active = true
         profileImageView.heightAnchor.constraintEqualToConstant(48).active = true
+        
+        timeLabel.rightAnchor.constraintEqualToAnchor(self.rightAnchor).active = true
+        timeLabel.topAnchor.constraintEqualToAnchor(self.topAnchor, constant: 18).active = true
+        timeLabel.widthAnchor.constraintEqualToConstant(100).active = true
+        timeLabel.heightAnchor.constraintEqualToAnchor(textLabel?.heightAnchor).active = true
     }
     
     required init?(coder aDecoder: NSCoder) {
