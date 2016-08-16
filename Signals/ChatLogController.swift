@@ -8,20 +8,25 @@
 import UIKit
 import Firebase
 
-class ChatLogController: UICollectionViewController {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     
-    let inputTextField: UITextField = {
+    var user: User? {
+        didSet {
+            navigationItem.title = user?.name
+        }
+    }
+    
+    lazy var inputTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter message..."
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.delegate = self
         return textField
     }()
     
     // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.title = "Chat Log Controller"
         
         collectionView?.backgroundColor = UIColor.whiteColor()
         
@@ -68,10 +73,16 @@ class ChatLogController: UICollectionViewController {
     }
     
     func handleSendMessage() {
-        
         let ref = FIRDatabase.database().reference().child("messages")
-        let values = ["text": inputTextField.text!]
-        ref.updateChildValues(values)
+        let childRef = ref.childByAutoId()
+        
+        let values = ["text": inputTextField.text!, "name": "Placeholder Name"]
+        childRef.updateChildValues(values)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        handleSendMessage()
+        return true
     }
 }
 
