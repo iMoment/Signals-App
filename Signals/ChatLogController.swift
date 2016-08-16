@@ -75,8 +75,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     func handleSendMessage() {
         let ref = FIRDatabase.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        
-        let values = ["text": inputTextField.text!, "name": "Placeholder Name"]
+        let toId = user!.id!
+        let fromId = FIRAuth.auth()!.currentUser!.uid
+        let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
+        let values = ["text": inputTextField.text!, "toRecipientID": toId, "fromSenderID": fromId, "timestamp": timestamp]
         childRef.updateChildValues(values)
     }
     

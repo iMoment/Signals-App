@@ -29,7 +29,10 @@ class NewMessageController: UITableViewController {
         FIRDatabase.database().reference().child("users").observeEventType(.ChildAdded, withBlock: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
+                print(snapshot)
                 let user = User()
+                user.id = snapshot.key
+                
                 user.setValuesForKeysWithDictionary(dictionary)
                 self.users.append(user)
                 
