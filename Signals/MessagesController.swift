@@ -45,6 +45,11 @@ class MessagesController: UITableViewController {
                     self.messageDictionary[toRecipientID] = message
                     
                     self.messages = Array(self.messageDictionary.values)
+                    self.messages.sortInPlace({ (message1, message2) -> Bool in
+                        
+                        return message1.timestamp?.intValue > message2.timestamp?.intValue
+                        
+                    })
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), { 
