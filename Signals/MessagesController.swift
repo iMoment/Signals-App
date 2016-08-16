@@ -19,6 +19,21 @@ class MessagesController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: #selector(handleNewMessage))
         
         checkIfUserIsLoggedIn()
+        
+        observeMessages()
+    }
+    
+    func observeMessages() {
+        let ref = FIRDatabase.database().reference().child("messages")
+        ref.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let message = Message()
+                message.setValuesForKeysWithDictionary(dictionary)
+                print(message.text)
+            }
+          
+            }, withCancelBlock: nil)
     }
     
     func handleNewMessage() {
@@ -94,8 +109,6 @@ class MessagesController: UITableViewController {
         containerView.centerYAnchor.constraintEqualToAnchor(titleView.centerYAnchor).active = true
         
         self.navigationItem.titleView = titleView
-        
-//        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
     }
     
     func showChatControllerForUser(user: User) {
