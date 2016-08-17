@@ -34,6 +34,14 @@ class ChatMessageCell: UICollectionViewCell {
         return view
     }()
     
+    let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "InsertImage")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
+    }()
+    
     var bubbleWidthAnchor: NSLayoutConstraint?
     
     override init(frame: CGRect) {
@@ -41,20 +49,25 @@ class ChatMessageCell: UICollectionViewCell {
         
         addSubview(bubbleView)
         addSubview(chatTextView)
+        addSubview(profileImageView)
         
         //  iOS9 Constraint Anchors
         bubbleView.rightAnchor.constraintEqualToAnchor(self.rightAnchor, constant: -8).active = true
         bubbleView.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
-        
+        bubbleView.heightAnchor.constraintEqualToAnchor(self.heightAnchor).active = true
         bubbleWidthAnchor = bubbleView.widthAnchor.constraintEqualToConstant(275)
         bubbleWidthAnchor?.active = true
-        
-        bubbleView.heightAnchor.constraintEqualToAnchor(self.heightAnchor).active = true
         
         chatTextView.leftAnchor.constraintEqualToAnchor(bubbleView.leftAnchor, constant: 8).active = true
         chatTextView.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
         chatTextView.rightAnchor.constraintEqualToAnchor(bubbleView.rightAnchor).active = true
         chatTextView.heightAnchor.constraintEqualToAnchor(self.heightAnchor).active = true
+        
+        profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
+        profileImageView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
+        profileImageView.widthAnchor.constraintEqualToConstant(32).active = true
+        profileImageView.heightAnchor.constraintEqualToConstant(32).active = true
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
