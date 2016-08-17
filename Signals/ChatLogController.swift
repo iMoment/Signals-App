@@ -87,6 +87,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let message = messages[indexPath.item]
         cell.chatTextView.text = message.text
         
+        if message.fromSenderID == FIRAuth.auth()?.currentUser?.uid {
+            //  Message will be blue bubbleView
+            cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+        } else {
+            //  Message will be grey bubbleView
+            cell.bubbleView.backgroundColor = UIColor(r: 240, g: 240, b: 240)
+        }
+        
         //  TODO: Modify width of bubble
         cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.text!).width + 26
         
@@ -110,7 +118,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     private func estimateFrameForText(text: String) -> CGRect {
-        let size = CGSize(width: 200, height: 1000)
+        let size = CGSize(width: 275, height: 1000)
         let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
         
         return NSString(string: text).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(16)], context: nil)
