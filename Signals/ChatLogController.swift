@@ -67,7 +67,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 58, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.whiteColor()
         collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
@@ -163,6 +163,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 print(error)
                 return
             }
+            
+            //  Clear textfield after user has pushed send button
+            self.inputTextField.text = nil
             
             let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId)
             
