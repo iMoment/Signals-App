@@ -26,9 +26,13 @@ class ChatMessageCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = UIColor(r: 0, g: 137, b: 249)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 16
+        view.layer.masksToBounds = true
         
         return view
     }()
+    
+    var bubbleWidthAnchor: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,8 +41,12 @@ class ChatMessageCell: UICollectionViewCell {
         addSubview(chatTextView)
         
         //  iOS9 Constraint Anchors
-        bubbleView.rightAnchor.constraintEqualToAnchor(self.rightAnchor).active = true
+        bubbleView.rightAnchor.constraintEqualToAnchor(self.rightAnchor, constant: -8).active = true
         bubbleView.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
+        
+        bubbleWidthAnchor = bubbleView.widthAnchor.constraintEqualToConstant(200)
+        bubbleWidthAnchor?.active = true
+        
         bubbleView.widthAnchor.constraintEqualToConstant(200).active = true
         bubbleView.heightAnchor.constraintEqualToAnchor(self.heightAnchor).active = true
         

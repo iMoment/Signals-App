@@ -67,6 +67,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.whiteColor()
         collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
@@ -84,7 +85,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let message = messages[indexPath.item]
         cell.chatTextView.text = message.text
         
-        //
+        //  TODO: Modify width of bubble
+        cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.text!).width + 32
         
         return cell
     }
@@ -92,7 +94,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         var height: CGFloat = 80
         
-        // Get height of text (estimated)
+        //  Get height of text (estimated)
         if let text = messages[indexPath.item].text {
             height = estimateFrameForText(text).height + 20
         }
