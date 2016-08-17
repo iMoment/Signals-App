@@ -88,7 +88,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         cell.chatTextView.text = message.text
         
         //  TODO: Modify width of bubble
-        cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.text!).width + 32
+        cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.text!).width + 26
         
         return cell
     }
@@ -98,6 +98,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
         var height: CGFloat = 80
         
         //  Get height of text (estimated)
