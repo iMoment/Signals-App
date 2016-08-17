@@ -22,8 +22,35 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
+    var messages = [Message]()
+    
     func observeMessages() {
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
         
+        let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(uid)
+        userMessagesRef.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+            
+            let messageId = snapshot.key
+            let messagesRef = FIRDatabase.database().reference().child("messages").child(messageId)
+            messagesRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                
+                guard let dictionary = snapshot.value as? [String: AnyObject] else {
+                    return
+                }
+                
+                let message = Message()
+                message.setValuesForKeysWithDictionary(dictionary)
+                self.messages.append(message)
+                
+                dispatch_async(dispatch_get_main_queue(), { 
+                    self.collectionView?.reloadData()
+                })
+                
+                }, withCancelBlock: nil)
+            
+            }, withCancelBlock: nil)
     }
     
     lazy var inputTextField: UITextField = {
@@ -46,7 +73,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return messages.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
