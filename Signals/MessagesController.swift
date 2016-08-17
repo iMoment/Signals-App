@@ -129,6 +129,7 @@ class MessagesController: UITableViewController {
             }
             
             let user = User()
+            user.id = chatPartnerId
             user.setValuesForKeysWithDictionary(dictionary)
             self.showChatControllerForUser(user)
             

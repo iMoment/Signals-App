@@ -10,12 +10,20 @@
 import UIKit
 import Firebase
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
+    
+    let cellId = "cellId"
     
     var user: User? {
         didSet {
             navigationItem.title = user?.name
+            
+            observeMessages()
         }
+    }
+    
+    func observeMessages() {
+        
     }
     
     lazy var inputTextField: UITextField = {
@@ -32,8 +40,25 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         collectionView?.backgroundColor = UIColor.whiteColor()
+        collectionView?.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         
         setupInputComponents()
+    }
+    
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath)
+        
+        cell.backgroundColor = UIColor.blueColor()
+        
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSize(width: view.frame.height, height: 80)
     }
     
     func setupInputComponents() {
@@ -82,7 +107,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let fromId = FIRAuth.auth()!.currentUser!.uid
         let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
         let values = ["text": inputTextField.text!, "toRecipientID": toId, "fromSenderID": fromId, "timestamp": timestamp]
-//        childRef.updateChildValues(values)
+
         childRef.updateChildValues(values) { (error, ref) in
             
             if error != nil {
