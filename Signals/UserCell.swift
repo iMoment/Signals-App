@@ -25,17 +25,18 @@ class UserCell: UITableViewCell {
                 dateFormatter.dateFormat = "hh:mm:ss a"
                 timeLabel.text = dateFormatter.stringFromDate(timestampDate)
             }
-            
         }
     }
     
     private func setupNameAndProfileImage() {
         
         if let userId = message?.chatPartnerId() {
+            
             let ref = FIRDatabase.database().reference().child("users").child(userId)
             ref.observeEventType(.Value, withBlock: { (snapshot) in
                 
                 if let dictionary = snapshot.value as? [String: AnyObject] {
+                    
                     self.textLabel?.text = dictionary["name"] as? String
                     
                     if let profileImageUrl = dictionary["profileImageUrl"] as? String {
