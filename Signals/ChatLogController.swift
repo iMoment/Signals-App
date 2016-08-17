@@ -67,7 +67,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         super.viewDidLoad()
         
         collectionView?.backgroundColor = UIColor.whiteColor()
-        collectionView?.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
         setupInputComponents()
     }
@@ -79,8 +79,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath)
         
-        cell.backgroundColor = UIColor.blueColor()
-        
         return cell
     }
     
@@ -90,6 +88,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func setupInputComponents() {
         let containerView = UIView()
+        containerView.backgroundColor = UIColor.whiteColor()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(containerView)
         
