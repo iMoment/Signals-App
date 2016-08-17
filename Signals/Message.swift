@@ -8,10 +8,15 @@
 //
 //  Class to hold Message object
 import UIKit
+import Firebase
 
 class Message: NSObject {
     var fromSenderID: String?
     var text: String?
     var timestamp: NSNumber?
     var toRecipientID: String?
+    
+    func chatPartnerId() -> String? {
+        return fromSenderID == FIRAuth.auth()?.currentUser?.uid ? toRecipientID : fromSenderID
+    }
 }
