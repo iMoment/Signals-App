@@ -75,6 +75,21 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
         setupInputComponents()
+        
+        setupKeyboardObservers()
+    }
+    
+    func setupKeyboardObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+    }
+    
+    func handleKeyboardWillShow(notification: NSNotification) {
+        let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue()
+        
+        print(keyboardFrame?.height)
+        
+        //  TODO: Move the input area up relative to the height of the keyboard
+        
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -89,7 +104,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         setupCell(cell, message: message)
         
-        //  TODO: Modify width of bubble
         cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.text!).width + 26
         
         return cell
