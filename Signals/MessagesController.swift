@@ -39,32 +39,39 @@ class MessagesController: UITableViewController {
         let ref = FIRDatabase.database().reference().child("user-messages").child(uid)
         ref.observeEventType(.ChildAdded, withBlock: { (snapshot) in
             
-            let messageId = snapshot.key
-            let messagesReference = FIRDatabase.database().reference().child("messages").child(messageId)
-            
-            messagesReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            let userId = snapshot.key
+            FIRDatabase.database().reference().child("user-messages").child(uid).child(userId).observeEventType(.ChildAdded, withBlock: { (snapshot) in
                 
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    let message = Message()
-                    message.setValuesForKeysWithDictionary(dictionary)
+                let messageId = snapshot.key
+                let messagesReference = FIRDatabase.database().reference().child("messages").child(messageId)
+                
+                messagesReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                     
-                    if let chatPartnerId = message.chatPartnerId() {
-                        self.messageDictionary[chatPartnerId] = message
+                    if let dictionary = snapshot.value as? [String: AnyObject] {
+                        let message = Message()
+                        message.setValuesForKeysWithDictionary(dictionary)
                         
-                        self.messages = Array(self.messageDictionary.values)
-                        self.messages.sortInPlace({ (message1, message2) -> Bool in
+                        if let chatPartnerId = message.chatPartnerId() {
+                            self.messageDictionary[chatPartnerId] = message
                             
-                            return message1.timestamp?.intValue > message2.timestamp?.intValue
-                            
-                        })
+                            self.messages = Array(self.messageDictionary.values)
+                            self.messages.sortInPlace({ (message1, message2) -> Bool in
+                                
+                                return message1.timestamp?.intValue > message2.timestamp?.intValue
+                                
+                            })
+                        }
+                        //  Introduce delay (bug with displaying user images and names)
+                        self.timer?.invalidate()
+                        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+                        
                     }
-                    //  Introduce delay (bug with displaying user images and names)
-                    self.timer?.invalidate()
-                    self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
                     
-                }
+                    }, withCancelBlock: nil)
                 
                 }, withCancelBlock: nil)
+            
+            return
             
             }, withCancelBlock: nil)
     }
