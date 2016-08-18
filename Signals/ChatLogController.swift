@@ -81,15 +81,19 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func setupKeyboardObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func handleKeyboardWillShow(notification: NSNotification) {
         let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue()
         
-        print(keyboardFrame?.height)
-        
         //  TODO: Move the input area up relative to the height of the keyboard
-        
+        containerViewBottomAnchor?.constant = -keyboardFrame!.height
+    }
+    
+    func handleKeyboardWillHide(notification: NSNotification) {
+        containerViewBottomAnchor?.constant = 0
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -155,6 +159,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         return NSString(string: text).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(16)], context: nil)
     }
     
+    var containerViewBottomAnchor: NSLayoutConstraint?
+    
     func setupInputComponents() {
         let containerView = UIView()
         containerView.backgroundColor = UIColor.whiteColor()
@@ -162,7 +168,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         view.addSubview(containerView)
         
         containerView.leftAnchor.constraintEqualToAnchor(view.leftAnchor).active = true
-        containerView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
+        
+        containerViewBottomAnchor = containerView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor)
+        containerViewBottomAnchor?.active = true
+        
         containerView.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
         containerView.heightAnchor.constraintEqualToConstant(50).active = true
         
