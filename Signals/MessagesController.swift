@@ -43,42 +43,47 @@ class MessagesController: UITableViewController {
             FIRDatabase.database().reference().child("user-messages").child(uid).child(userId).observeEventType(.ChildAdded, withBlock: { (snapshot) in
                 
                 let messageId = snapshot.key
-                let messagesReference = FIRDatabase.database().reference().child("messages").child(messageId)
-                
-                messagesReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                    
-                    if let dictionary = snapshot.value as? [String: AnyObject] {
-                        let message = Message()
-                        message.setValuesForKeysWithDictionary(dictionary)
-                        
-                        if let chatPartnerId = message.chatPartnerId() {
-                            self.messageDictionary[chatPartnerId] = message
-                            
-                            self.messages = Array(self.messageDictionary.values)
-                            self.messages.sortInPlace({ (message1, message2) -> Bool in
-                                
-                                return message1.timestamp?.intValue > message2.timestamp?.intValue
-                                
-                            })
-                        }
-                        //  Introduce delay (bug with displaying user images and names)
-                        self.timer?.invalidate()
-                        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-                        
-                    }
-                    
-                    }, withCancelBlock: nil)
+                self.fetchMessageWithMessageId(messageId)
                 
                 }, withCancelBlock: nil)
             
-            return
+            }, withCancelBlock: nil)
+    }
+    
+    private func fetchMessageWithMessageId(messageId: String) {
+        let messagesReference = FIRDatabase.database().reference().child("messages").child(messageId)
+        
+        messagesReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let message = Message()
+                message.setValuesForKeysWithDictionary(dictionary)
+                
+                if let chatPartnerId = message.chatPartnerId() {
+                    self.messageDictionary[chatPartnerId] = message
+                }
+                //  Introduce delay (bug with displaying user images and names)
+                self.attemptReloadOfTable()
+            }
             
             }, withCancelBlock: nil)
+    }
+    
+    private func attemptReloadOfTable() {
+        self.timer?.invalidate()
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
     }
     
     var timer: NSTimer?
     
     func handleReloadTable() {
+        self.messages = Array(self.messageDictionary.values)
+        self.messages.sortInPlace({ (message1, message2) -> Bool in
+            
+            return message1.timestamp?.intValue > message2.timestamp?.intValue
+            
+        })
+        
         dispatch_async(dispatch_get_main_queue(), {
             self.tableView.reloadData()
         })

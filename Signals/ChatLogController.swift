@@ -41,14 +41,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 
                 let message = Message()
                 message.setValuesForKeysWithDictionary(dictionary)
-                // TODO: Filter messages pertaining to sender and recipient
-                // Still necessary to filter?
-                if message.chatPartnerId() == self.user?.id {
-                    self.messages.append(message)
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.collectionView?.reloadData()
-                    })
-                }
+                
+                self.messages.append(message)
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.collectionView?.reloadData()
+                })
                 
                 }, withCancelBlock: nil)
             
