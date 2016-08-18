@@ -73,8 +73,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.keyboardDismissMode = .Interactive
         
-//        setupInputComponents()
-//        
 //        setupKeyboardObservers()
     }
     
@@ -82,6 +80,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
         containerView.backgroundColor = UIColor.whiteColor()
+        
+        let uploadImageView = UIImageView()
+        uploadImageView.image = UIImage(named: "InsertChatMedia")
+        uploadImageView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(uploadImageView)
+        
+        uploadImageView.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor).active = true
+        uploadImageView.centerYAnchor.constraintEqualToAnchor(containerView.centerYAnchor).active = true
+        uploadImageView.widthAnchor.constraintEqualToConstant(44).active = true
+        uploadImageView.heightAnchor.constraintEqualToConstant(44).active = true
         
         let sendButton = UIButton(type: .System)
         sendButton.setTitle("Send", forState: .Normal)
@@ -96,7 +104,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         containerView.addSubview(self.inputTextField)
         
-        self.inputTextField.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor, constant: 8).active = true
+        self.inputTextField.leftAnchor.constraintEqualToAnchor(uploadImageView.rightAnchor, constant: 8).active = true
         self.inputTextField.centerYAnchor.constraintEqualToAnchor(containerView.centerYAnchor).active = true
         self.inputTextField.rightAnchor.constraintEqualToAnchor(sendButton.leftAnchor).active = true
         self.inputTextField.heightAnchor.constraintEqualToAnchor(containerView.heightAnchor).active = true
@@ -222,49 +230,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     var containerViewBottomAnchor: NSLayoutConstraint?
-    
-    func setupInputComponents() {
-        let containerView = UIView()
-        containerView.backgroundColor = UIColor.whiteColor()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(containerView)
-        
-        containerView.leftAnchor.constraintEqualToAnchor(view.leftAnchor).active = true
-        
-        containerViewBottomAnchor = containerView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor)
-        containerViewBottomAnchor?.active = true
-        
-        containerView.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
-        containerView.heightAnchor.constraintEqualToConstant(50).active = true
-        
-        let sendButton = UIButton(type: .System)
-        sendButton.setTitle("Send", forState: .Normal)
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.addTarget(self, action: #selector(handleSendMessage), forControlEvents: .TouchUpInside)
-        containerView.addSubview(sendButton)
-        
-        sendButton.rightAnchor.constraintEqualToAnchor(containerView.rightAnchor).active = true
-        sendButton.centerYAnchor.constraintEqualToAnchor(containerView.centerYAnchor).active = true
-        sendButton.widthAnchor.constraintEqualToConstant(80).active = true
-        sendButton.heightAnchor.constraintEqualToAnchor(containerView.heightAnchor).active = true
-        
-        containerView.addSubview(inputTextField)
-        
-        inputTextField.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor, constant: 8).active = true
-        inputTextField.centerYAnchor.constraintEqualToAnchor(containerView.centerYAnchor).active = true
-        inputTextField.rightAnchor.constraintEqualToAnchor(sendButton.leftAnchor).active = true
-        inputTextField.heightAnchor.constraintEqualToAnchor(containerView.heightAnchor).active = true
-        
-        let separatorLineView = UIView()
-        separatorLineView.backgroundColor = UIColor(r: 220, g: 220, b: 220)
-        separatorLineView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(separatorLineView)
-        
-        separatorLineView.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor).active = true
-        separatorLineView.topAnchor.constraintEqualToAnchor(containerView.topAnchor).active = true
-        separatorLineView.widthAnchor.constraintEqualToAnchor(containerView.widthAnchor).active = true
-        separatorLineView.heightAnchor.constraintEqualToConstant(1).active = true
-    }
     
     func handleSendMessage() {
         let ref = FIRDatabase.database().reference().child("messages")

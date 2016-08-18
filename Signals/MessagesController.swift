@@ -25,7 +25,6 @@ class MessagesController: UITableViewController {
         checkIfUserIsLoggedIn()
         
         tableView.registerClass(UserCell.self, forCellReuseIdentifier: cellId)
-        
     }
     
     var messages = [Message]()
