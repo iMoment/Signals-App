@@ -73,7 +73,6 @@ class MessagesController: UITableViewController {
     
     func handleReloadTable() {
         dispatch_async(dispatch_get_main_queue(), {
-            print("I have reloaded.")
             self.tableView.reloadData()
         })
     }
