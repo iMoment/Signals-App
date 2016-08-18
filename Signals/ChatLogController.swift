@@ -100,10 +100,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             //  Message will be blue bubbleView
             cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
             cell.chatTextView.textColor = UIColor.whiteColor()
+            cell.profileImageView.hidden = true
         } else {
             //  Message will be grey bubbleView
             cell.bubbleView.backgroundColor = UIColor(r: 240, g: 240, b: 240)
             cell.chatTextView.textColor = UIColor.blackColor()
+            cell.profileImageView.hidden = false
+            cell.bubbleRightAnchor?.active = false
+            cell.bubbleLeftAnchor?.active = true
         }
     }
     

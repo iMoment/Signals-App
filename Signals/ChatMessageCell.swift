@@ -38,11 +38,16 @@ class ChatMessageCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "InsertImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 16
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .ScaleAspectFill
         
         return imageView
     }()
     
     var bubbleWidthAnchor: NSLayoutConstraint?
+    var bubbleRightAnchor: NSLayoutConstraint?
+    var bubbleLeftAnchor: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,7 +57,10 @@ class ChatMessageCell: UICollectionViewCell {
         addSubview(profileImageView)
         
         //  iOS9 Constraint Anchors
-        bubbleView.rightAnchor.constraintEqualToAnchor(self.rightAnchor, constant: -8).active = true
+        bubbleRightAnchor = bubbleView.rightAnchor.constraintEqualToAnchor(self.rightAnchor, constant: -8)
+        bubbleRightAnchor?.active = true
+        bubbleLeftAnchor = bubbleView.leftAnchor.constraintEqualToAnchor(profileImageView.rightAnchor, constant: 8)
+//        bubbleLeftAnchor?.active = false
         bubbleView.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
         bubbleView.heightAnchor.constraintEqualToAnchor(self.heightAnchor).active = true
         bubbleWidthAnchor = bubbleView.widthAnchor.constraintEqualToConstant(275)
