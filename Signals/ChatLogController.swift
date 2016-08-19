@@ -287,6 +287,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             cell.bubbleRightAnchor?.active = false
             cell.bubbleLeftAnchor?.active = true
         }
+        
+        if let messageImageUrl = message.imageUrl {
+            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageUrl)
+            cell.messageImageView.hidden = false
+            cell.bubbleView.backgroundColor = UIColor.clearColor()
+        } else {
+            cell.messageImageView.hidden = true
+        }
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
