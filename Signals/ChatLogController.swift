@@ -88,10 +88,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadImage)))
         containerView.addSubview(uploadImageView)
         
-        uploadImageView.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor).active = true
+        uploadImageView.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor, constant: 8).active = true
         uploadImageView.centerYAnchor.constraintEqualToAnchor(containerView.centerYAnchor).active = true
-        uploadImageView.widthAnchor.constraintEqualToConstant(44).active = true
-        uploadImageView.heightAnchor.constraintEqualToConstant(44).active = true
+        uploadImageView.widthAnchor.constraintEqualToConstant(32).active = true
+        uploadImageView.heightAnchor.constraintEqualToConstant(32).active = true
         
         let sendButton = UIButton(type: .System)
         sendButton.setTitle("Send", forState: .Normal)
@@ -134,7 +134,25 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        print("We selected an image.")
+        var selectedImageFromPicker: UIImage?
+        
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            print(editedImage.size)
+            selectedImageFromPicker = editedImage
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            print(originalImage.size)
+            selectedImageFromPicker = originalImage
+        }
+        
+        if let selectedImage = selectedImageFromPicker {
+            uploadImageToFirebaseStorage(selectedImage)
+        }
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    private func uploadImageToFirebaseStorage(image: UIImage) {
+        print("Upload to Firebase.")
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
