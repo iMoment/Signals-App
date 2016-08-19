@@ -65,6 +65,8 @@ class ChatMessageCell: UICollectionViewCell {
         addSubview(chatTextView)
         addSubview(profileImageView)
         
+        bubbleView.addSubview(messageImageView)
+        
         //  iOS9 Constraint Anchors
         bubbleRightAnchor = bubbleView.rightAnchor.constraintEqualToAnchor(self.rightAnchor, constant: -8)
         bubbleRightAnchor?.active = true
@@ -84,6 +86,11 @@ class ChatMessageCell: UICollectionViewCell {
         profileImageView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
         profileImageView.widthAnchor.constraintEqualToConstant(32).active = true
         profileImageView.heightAnchor.constraintEqualToConstant(32).active = true
+        
+        messageImageView.leftAnchor.constraintEqualToAnchor(bubbleView.leftAnchor).active = true
+        messageImageView.topAnchor.constraintEqualToAnchor(bubbleView.topAnchor).active = true
+        messageImageView.widthAnchor.constraintEqualToAnchor(bubbleView.widthAnchor).active = true
+        messageImageView.heightAnchor.constraintEqualToAnchor(bubbleView.heightAnchor).active = true
         
     }
     
