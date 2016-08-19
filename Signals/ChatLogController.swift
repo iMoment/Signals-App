@@ -152,7 +152,53 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     private func uploadImageToFirebaseStorage(image: UIImage) {
-        print("Upload to Firebase.")
+        let imageName = NSUUID().UUIDString
+        let storageRef = FIRStorage.storage().reference().child("message_images").child(imageName)
+        
+        if let imageUploadData = UIImageJPEGRepresentation(image, 0.2) {
+            storageRef.putData(imageUploadData, metadata: nil, completion: { (metadata, error) in
+                
+                if error != nil {
+                    print("Failed to upload the image:", error)
+                    return
+                }
+                
+                if let imageUrl = metadata?.downloadURL()?.absoluteString {
+                    self.sendMessageWithImageUrl(imageUrl)
+                }
+                
+            })
+        }
+    }
+    
+    private func sendMessageWithImageUrl(imageUrl: String) {
+        let ref = FIRDatabase.database().reference().child("messages")
+        let childRef = ref.childByAutoId()
+        let toId = user!.id!
+        let fromId = FIRAuth.auth()!.currentUser!.uid
+        let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
+        
+        let values = ["imageUrl": imageUrl, "toRecipientID": toId, "fromSenderID": fromId, "timestamp": timestamp]
+        
+        childRef.updateChildValues(values) { (error, ref) in
+            
+            if error != nil {
+                print(error)
+                return
+            }
+            
+            //  Clear textfield after user has pushed send button
+            self.inputTextField.text = nil
+            
+            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId).child(toId)
+            
+            let messageId = childRef.key
+            userMessagesRef.updateChildValues([messageId : 1])
+            
+            let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId)
+            recipientUserMessagesRef.updateChildValues([messageId : 1])
+        }
+
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
