@@ -39,10 +39,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     return
                 }
                 
-                let message = Message()
-                message.setValuesForKeysWithDictionary(dictionary)
-                
-                self.messages.append(message)
+                self.messages.append(Message(dictionary: dictionary))
                 dispatch_async(dispatch_get_main_queue(), {
                     self.collectionView?.reloadData()
                 })
@@ -164,21 +161,21 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 }
                 
                 if let imageUrl = metadata?.downloadURL()?.absoluteString {
-                    self.sendMessageWithImageUrl(imageUrl)
+                    self.sendMessageWithImageUrl(imageUrl, image: image)
                 }
                 
             })
         }
     }
     
-    private func sendMessageWithImageUrl(imageUrl: String) {
+    private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
         let ref = FIRDatabase.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         let toId = user!.id!
         let fromId = FIRAuth.auth()!.currentUser!.uid
         let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
         
-        let values = ["imageUrl": imageUrl, "toRecipientID": toId, "fromSenderID": fromId, "timestamp": timestamp]
+        let values = ["toRecipientID": toId, "fromSenderID": fromId, "timestamp": timestamp, "imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
         
         childRef.updateChildValues(values) { (error, ref) in
             
