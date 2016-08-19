@@ -11,10 +11,13 @@ import UIKit
 import Firebase
 
 class Message: NSObject {
+    
     var fromSenderID: String?
     var text: String?
     var timestamp: NSNumber?
     var toRecipientID: String?
+    
+    var imageUrl: String?
     
     func chatPartnerId() -> String? {
         return fromSenderID == FIRAuth.auth()?.currentUser?.uid ? toRecipientID : fromSenderID

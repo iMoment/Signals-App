@@ -259,7 +259,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         setupCell(cell, message: message)
         
-        cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.text!).width + 26
+        if let text = message.text {
+            cell.bubbleWidthAnchor?.constant = estimateFrameForText(text).width + 26
+        }
         
         return cell
     }
