@@ -168,36 +168,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
-    private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
-        let ref = FIRDatabase.database().reference().child("messages")
-        let childRef = ref.childByAutoId()
-        let toId = user!.id!
-        let fromId = FIRAuth.auth()!.currentUser!.uid
-        let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
-        
-        let values = ["toRecipientID": toId, "fromSenderID": fromId, "timestamp": timestamp, "imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
-        
-        childRef.updateChildValues(values) { (error, ref) in
-            
-            if error != nil {
-                print(error)
-                return
-            }
-            
-            //  Clear textfield after user has pushed send button
-            self.inputTextField.text = nil
-            
-            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId).child(toId)
-            
-            let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId : 1])
-            
-            let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId)
-            recipientUserMessagesRef.updateChildValues([messageId : 1])
-        }
-
-    }
-    
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -328,13 +298,25 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var containerViewBottomAnchor: NSLayoutConstraint?
     
     func handleSendMessage() {
+        let properties = ["text": inputTextField.text!]
+        sendMessageWithProperties(properties)
+    }
+    
+    private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
+        let properties: [String: AnyObject] = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
+        sendMessageWithProperties(properties)
+    }
+    
+    private func sendMessageWithProperties(properties: [String: AnyObject]) {
         let ref = FIRDatabase.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         let toId = user!.id!
         let fromId = FIRAuth.auth()!.currentUser!.uid
         let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
-        let values = ["text": inputTextField.text!, "toRecipientID": toId, "fromSenderID": fromId, "timestamp": timestamp]
-
+        
+        var values: [String: AnyObject] = ["toRecipientID": toId, "fromSenderID": fromId, "timestamp": timestamp]
+        properties.forEach({values[$0] = $1})
+        
         childRef.updateChildValues(values) { (error, ref) in
             
             if error != nil {
@@ -360,16 +342,3 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         return true
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
