@@ -258,6 +258,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         if let text = message.text {
             cell.bubbleWidthAnchor?.constant = estimateFrameForText(text).width + 26
+        } else if message.imageUrl != nil {
+            //  Fall into this control flow if it is an image
+            cell.bubbleWidthAnchor?.constant = 275
         }
         
         return cell
@@ -303,8 +306,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         var height: CGFloat = 80
         
         //  Get height of text (estimated)
-        if let text = messages[indexPath.item].text {
+        let message = messages[indexPath.item]
+        if let text = message.text {
             height = estimateFrameForText(text).height + 20
+        } else if let imageWidth = message.imageWidth?.floatValue, imageHeight = message.imageHeight?.floatValue {
+            height = CGFloat(imageHeight / imageWidth * 275)
         }
         
         let width = UIScreen.mainScreen().bounds.width
