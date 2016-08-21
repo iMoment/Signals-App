@@ -359,23 +359,33 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
+    var startingFrame: CGRect?
+    var blackBackgroundView: UIView?
+    
     func performZoomForImageOnTap(startingImageView: UIImageView) {
-        print("We are zooming in.")
         // Frame inside entire application
-        let startingFrame = startingImageView.superview?.convertRect(startingImageView.frame, toView: nil)
-        print(startingFrame)
+        startingFrame = startingImageView.superview?.convertRect(startingImageView.frame, toView: nil)
         
         let zoomingImageView = UIImageView(frame: startingFrame!)
         zoomingImageView.backgroundColor = UIColor.redColor()
         zoomingImageView.image = startingImageView.image
+        zoomingImageView.userInteractionEnabled = true
+        zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
         
         if let keyWindow = UIApplication.sharedApplication().keyWindow {
+            blackBackgroundView = UIView(frame: keyWindow.frame)
+            blackBackgroundView?.backgroundColor = UIColor.blackColor()
+            blackBackgroundView?.alpha = 0
+            keyWindow.addSubview(blackBackgroundView!)
+            
             keyWindow.addSubview(zoomingImageView)
             
-            UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseOut, animations: { 
+            UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseOut, animations: {
                 
+                self.blackBackgroundView?.alpha = 1
+                self.inputContainerView.alpha = 0
                 // TODO: Zoom to proper scale
-                let height = startingFrame!.height / startingFrame!.width * keyWindow.frame.width
+                let height = self.startingFrame!.height / self.startingFrame!.width * keyWindow.frame.width
                 
                 
                 zoomingImageView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
@@ -383,8 +393,22 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 
                 }, completion: nil)
         }
-        
-        
+    }
+    
+    func handleZoomOut(tapGesture: UITapGestureRecognizer) {
+        if let zoomedOutImageView = tapGesture.view {
+            // TODO: Need to animate back out to controller
+            
+            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: { 
+                
+                zoomedOutImageView.frame = self.startingFrame!
+                self.blackBackgroundView?.alpha = 0
+                
+                }, completion: { (completed) in
+                    zoomedOutImageView.removeFromSuperview()
+            })
+            
+        }
     }
 }
 
