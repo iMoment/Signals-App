@@ -43,8 +43,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 dispatch_async(dispatch_get_main_queue(), {
                     self.collectionView?.reloadData()
                     //  TODO: Scroll to the last index for viewers to read easier
-                    let indexPath = NSIndexPath(forItem: self.messages.count - 1, inSection: 0)
-                    self.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
+                    if self.messages.count > 0 {
+                        let indexPath = NSIndexPath(forItem: self.messages.count - 1, inSection: 0)
+//                        self.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+                        self.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
+                    }
                 })
                 
                 }, withCancelBlock: nil)
@@ -72,7 +75,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.backgroundColor = UIColor.whiteColor()
         collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.keyboardDismissMode = .Interactive
-        
         
         setupKeyboardObservers()
     }
