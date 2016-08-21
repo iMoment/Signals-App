@@ -42,6 +42,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 self.messages.append(Message(dictionary: dictionary))
                 dispatch_async(dispatch_get_main_queue(), {
                     self.collectionView?.reloadData()
+                    //  TODO: Scroll to the last index for viewers to read easier
+                    let indexPath = NSIndexPath(forItem: self.messages.count - 1, inSection: 0)
+                    self.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
                 })
                 
                 }, withCancelBlock: nil)
@@ -195,10 +198,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    var containerViewBottomAnchor: NSLayoutConstraint?
+    
     func handleKeyboardWillShow(notification: NSNotification) {
         let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue()
         let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue
-        //  TODO: Move the input area up relative to the height of the keyboard
+        //  Move the input area up relative to the height of the keyboard
         containerViewBottomAnchor?.constant = -keyboardFrame!.height
         UIView.animateWithDuration(keyboardDuration!) {
             self.view.layoutIfNeeded()
@@ -207,7 +212,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func handleKeyboardWillHide(notification: NSNotification) {
         let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue
-        //  TODO: Move the input area up relative to the height of the keyboard
+        //  Move the input area up relative to the height of the keyboard
         containerViewBottomAnchor?.constant = 0
         UIView.animateWithDuration(keyboardDuration!) {
             self.view.layoutIfNeeded()
@@ -295,8 +300,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         return NSString(string: text).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(16)], context: nil)
     }
     
-    var containerViewBottomAnchor: NSLayoutConstraint?
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        handleSendMessage()
+        return true
+    }
     
+    //  MARK: Sending Message Functions
     func handleSendMessage() {
         let properties = ["text": inputTextField.text!]
         sendMessageWithProperties(properties)
@@ -335,10 +344,5 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId)
             recipientUserMessagesRef.updateChildValues([messageId : 1])
         }
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        handleSendMessage()
-        return true
     }
 }
