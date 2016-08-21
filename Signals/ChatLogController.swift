@@ -235,6 +235,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath) as! ChatMessageCell
         
+        cell.chatLogController = self
+        
         let message = messages[indexPath.item]
         cell.chatTextView.text = message.text
         
@@ -242,9 +244,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         if let text = message.text {
             cell.bubbleWidthAnchor?.constant = estimateFrameForText(text).width + 26
+            cell.chatTextView.hidden = false
         } else if message.imageUrl != nil {
             //  Fall into this control flow if it is an image
             cell.bubbleWidthAnchor?.constant = 275
+            cell.chatTextView.hidden = true
         }
         
         return cell
@@ -353,5 +357,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId)
             recipientUserMessagesRef.updateChildValues([messageId : 1])
         }
+    }
+    
+    func performZoomForImageOnTap(imageView: UIImageView) {
+        print("We are zooming in.")
     }
 }
