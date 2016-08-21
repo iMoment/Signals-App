@@ -359,7 +359,60 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
-    func performZoomForImageOnTap(imageView: UIImageView) {
+    func performZoomForImageOnTap(startingImageView: UIImageView) {
         print("We are zooming in.")
+        // Frame inside entire application
+        let startingFrame = startingImageView.superview?.convertRect(startingImageView.frame, toView: nil)
+        print(startingFrame)
+        
+        let zoomingImageView = UIImageView(frame: startingFrame!)
+        zoomingImageView.backgroundColor = UIColor.redColor()
+        zoomingImageView.image = startingImageView.image
+        
+        if let keyWindow = UIApplication.sharedApplication().keyWindow {
+            keyWindow.addSubview(zoomingImageView)
+            
+            UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseOut, animations: { 
+                
+                // TODO: Zoom to proper scale
+                let height = startingFrame!.height / startingFrame!.width * keyWindow.frame.width
+                
+                
+                zoomingImageView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
+                zoomingImageView.center = keyWindow.center
+                
+                }, completion: nil)
+        }
+        
+        
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
