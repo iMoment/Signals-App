@@ -73,7 +73,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.keyboardDismissMode = .Interactive
         
-//        setupKeyboardObservers()
+        
+        setupKeyboardObservers()
     }
     
     lazy var inputContainerView: UIView = {
@@ -187,9 +188,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     func setupKeyboardObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardDidShow), name: UIKeyboardDidShowNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+//        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func handleKeyboardDidShow() {
+        if messages.count > 0 {
+            let indexPath = NSIndexPath(forItem: messages.count - 1, inSection: 0)
+            collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
