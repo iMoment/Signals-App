@@ -361,8 +361,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     var startingFrame: CGRect?
     var blackBackgroundView: UIView?
+    var startingImageView: UIImageView?
     
     func performZoomForImageOnTap(startingImageView: UIImageView) {
+        
+        self.startingImageView = startingImageView
+        self.startingImageView?.hidden = true
+        
         // Frame inside entire application
         startingFrame = startingImageView.superview?.convertRect(startingImageView.frame, toView: nil)
         
@@ -380,7 +385,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             keyWindow.addSubview(zoomingImageView)
             
-            UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseOut, animations: {
+            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
                 
                 self.blackBackgroundView?.alpha = 1
                 self.inputContainerView.alpha = 0
@@ -391,21 +396,28 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 zoomingImageView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
                 zoomingImageView.center = keyWindow.center
                 
-                }, completion: nil)
-        }
+                }, completion: { (completed) in
+//                    do nothing
+            })
+            
+          }
     }
     
     func handleZoomOut(tapGesture: UITapGestureRecognizer) {
         if let zoomedOutImageView = tapGesture.view {
             // TODO: Need to animate back out to controller
+            zoomedOutImageView.layer.cornerRadius = 16
+            zoomedOutImageView.clipsToBounds = true
             
             UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: { 
                 
                 zoomedOutImageView.frame = self.startingFrame!
                 self.blackBackgroundView?.alpha = 0
+                self.inputContainerView.alpha = 1
                 
                 }, completion: { (completed) in
                     zoomedOutImageView.removeFromSuperview()
+                    self.startingImageView?.hidden = false
             })
             
         }
