@@ -35,6 +35,26 @@ class MessagesController: UITableViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         print(indexPath.row)
+        
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
+        
+        let message = self.messages[indexPath.row]
+        
+        if let chatPartnerId = message.chatPartnerId() {
+            FIRDatabase.database().reference().child("user-messages").child(uid).child(chatPartnerId).removeValueWithCompletionBlock({ (error, ref) in
+                
+                if error != nil {
+                    print("Failed to delete message:", error)
+                    return
+                }
+                //  Unsafe way to delete, but first implement
+                self.messages.removeAtIndex(indexPath.row)
+                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                
+            })
+        }
     }
     
     var messages = [Message]()
