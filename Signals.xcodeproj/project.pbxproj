@@ -26,6 +26,7 @@
 		918B15541D63456200A38B48 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918B15531D63456200A38B48 /* Message.swift */; };
 		91B6B8BC1D61DD1100AB9BFF /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B6B8BB1D61DD1100AB9BFF /* LoginController+handlers.swift */; };
 		91B6B8BF1D621ACE00AB9BFF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B6B8BE1D621ACE00AB9BFF /* Extensions.swift */; };
+		91BB74E31D6D082A00530FFF /* ChatInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BB74E21D6D082A00530FFF /* ChatInputContainerView.swift */; };
 		91C9F4551D61C73A009752E8 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C9F4541D61C73A009752E8 /* NewMessageController.swift */; };
 		91C9F4581D61D0C8009752E8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C9F4571D61D0C8009752E8 /* User.swift */; };
 		DD4827B68147A46CF1473E74 /* libPods-SignalsUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1B8B0D1BE5FB41C2CA9D556 /* libPods-SignalsUITests.a */; };
@@ -75,6 +76,7 @@
 		918B15531D63456200A38B48 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		91B6B8BB1D61DD1100AB9BFF /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		91B6B8BE1D621ACE00AB9BFF /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		91BB74E21D6D082A00530FFF /* ChatInputContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInputContainerView.swift; sourceTree = "<group>"; };
 		91C9F4541D61C73A009752E8 /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		91C9F4571D61D0C8009752E8 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		953E64509E11F30043AC7463 /* Pods_Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,6 +187,7 @@
 			children = (
 				9181600F1D636E8800EB99F0 /* UserCell.swift */,
 				913A69761D64C4BD0085706B /* ChatMessageCell.swift */,
+				91BB74E21D6D082A00530FFF /* ChatInputContainerView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				918B15521D63229E00A38B48 /* ChatLogController.swift in Sources */,
+				91BB74E31D6D082A00530FFF /* ChatInputContainerView.swift in Sources */,
 				91C9F4551D61C73A009752E8 /* NewMessageController.swift in Sources */,
 				9166B9D01D607461003475B6 /* MessagesController.swift in Sources */,
 				918B15541D63456200A38B48 /* Message.swift in Sources */,
