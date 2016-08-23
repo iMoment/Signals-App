@@ -140,6 +140,32 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        
+        if let videoUrl = info[UIImagePickerControllerMediaURL] as? NSURL {
+            handleVideoSelectedForUrl(videoUrl)
+        } else {
+            handleImageSelectedForInfo(info)
+        }
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    private func handleVideoSelectedForUrl(url: NSURL) {
+        let filename = "message_videos"
+        FIRStorage.storage().reference().child(filename).putFile(url, metadata: nil, completion: { (metadata, error) in
+            
+            if error != nil {
+                print("Failed upload of video:", error)
+                return
+            }
+            
+            if let storageUrl = metadata?.downloadURL()?.absoluteString {
+                print(storageUrl)
+            }
+        })
+    }
+    
+    private func handleImageSelectedForInfo(info: [String: AnyObject]) {
         var selectedImageFromPicker: UIImage?
         
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -153,8 +179,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         if let selectedImage = selectedImageFromPicker {
             uploadImageToFirebaseStorage(selectedImage)
         }
-        
-        dismissViewControllerAnimated(true, completion: nil)
     }
     
     private func uploadImageToFirebaseStorage(image: UIImage) {
