@@ -13,6 +13,16 @@ class ChatMessageCell: UICollectionViewCell {
     
     var chatLogController: ChatLogController?
     
+    let playButton: UIButton = {
+        let button = UIButton(type: .System)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "PlayButton")
+        button.tintColor = UIColor.whiteColor()
+        button.setImage(image, forState: .Normal)
+        
+        return button
+    }()
+    
     let chatTextView: UITextView = {
         let textView = UITextView()
         textView.text = "Sample Text"
@@ -77,6 +87,21 @@ class ChatMessageCell: UICollectionViewCell {
         addSubview(profileImageView)
         
         bubbleView.addSubview(messageImageView)
+        messageImageView.leftAnchor.constraintEqualToAnchor(bubbleView.leftAnchor).active = true
+        messageImageView.topAnchor.constraintEqualToAnchor(bubbleView.topAnchor).active = true
+        messageImageView.widthAnchor.constraintEqualToAnchor(bubbleView.widthAnchor).active = true
+        messageImageView.heightAnchor.constraintEqualToAnchor(bubbleView.heightAnchor).active = true
+        
+        bubbleView.addSubview(playButton)
+        playButton.centerXAnchor.constraintEqualToAnchor(bubbleView.centerXAnchor).active = true
+        playButton.centerYAnchor.constraintEqualToAnchor(bubbleView.centerYAnchor).active = true
+        playButton.widthAnchor.constraintEqualToConstant(75).active = true
+        playButton.heightAnchor.constraintEqualToConstant(75).active = true
+        
+        profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
+        profileImageView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
+        profileImageView.widthAnchor.constraintEqualToConstant(32).active = true
+        profileImageView.heightAnchor.constraintEqualToConstant(32).active = true
         
         //  iOS9 Constraint Anchors
         bubbleRightAnchor = bubbleView.rightAnchor.constraintEqualToAnchor(self.rightAnchor, constant: -8)
@@ -92,17 +117,6 @@ class ChatMessageCell: UICollectionViewCell {
         chatTextView.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
         chatTextView.rightAnchor.constraintEqualToAnchor(bubbleView.rightAnchor).active = true
         chatTextView.heightAnchor.constraintEqualToAnchor(self.heightAnchor).active = true
-        
-        profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
-        profileImageView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
-        profileImageView.widthAnchor.constraintEqualToConstant(32).active = true
-        profileImageView.heightAnchor.constraintEqualToConstant(32).active = true
-        
-        messageImageView.leftAnchor.constraintEqualToAnchor(bubbleView.leftAnchor).active = true
-        messageImageView.topAnchor.constraintEqualToAnchor(bubbleView.topAnchor).active = true
-        messageImageView.widthAnchor.constraintEqualToAnchor(bubbleView.widthAnchor).active = true
-        messageImageView.heightAnchor.constraintEqualToAnchor(bubbleView.heightAnchor).active = true
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
