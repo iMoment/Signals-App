@@ -4,9 +4,9 @@
 //
 //  Created by Stanley Pan on 8/17/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-
 //
-//  Custom UserCell class
+//  Custom UserCell Class
+
 import UIKit
 import Firebase
 
@@ -33,7 +33,7 @@ class UserCell: UITableViewCell {
         if let userId = message?.chatPartnerId() {
             
             let ref = FIRDatabase.database().reference().child("users").child(userId)
-            ref.observeEventType(.Value, withBlock: { (snapshot) in
+            ref.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     
@@ -81,7 +81,7 @@ class UserCell: UITableViewCell {
         addSubview(profileImageView)
         addSubview(timeLabel)
         
-        // iOS 9 constraint anchors
+        // iOS 9 Constraint Anchors
         profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
         profileImageView.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
         profileImageView.widthAnchor.constraintEqualToConstant(48).active = true
