@@ -49,9 +49,13 @@ class MessagesController: UITableViewController {
                     print("Failed to delete message:", error)
                     return
                 }
+                
+                self.messageDictionary.removeValueForKey(chatPartnerId)
+                self.attemptReloadOfTable()
+                
                 //  Unsafe way to delete, but first implement
-                self.messages.removeAtIndex(indexPath.row)
-                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+//                self.messages.removeAtIndex(indexPath.row)
+//                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
                 
             })
         }
