@@ -159,8 +159,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 return
             }
             
-            if let storageUrl = metadata?.downloadURL()?.absoluteString {
-                print(storageUrl)
+            if let videoUrl = metadata?.downloadURL()?.absoluteString {
+//                let properties: [String: AnyObject] = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
+                
+                let thumbnailImage = self.thumbnailImageForFileUrl(url)
+                
+                let properties: [String: AnyObject] = ["videoUrl": videoUrl]
+                self.sendMessageWithProperties(properties)
             }
         })
         
@@ -173,6 +178,20 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         uploadTask.observeStatus(.Success) { (snapshot) in
             self.navigationItem.title = self.user?.name
         }
+    }
+    
+    private func thumbnailImageForFileUrl(fileUrl: NSURL) -> UIImage? {
+        let asset = AVAsset(URL: fileUrl)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        
+        do {
+            let thumbnailCGImage = try imageGenerator.copyCGImageAtTime(CMTimeMake(1, 60), actualTime: nil)
+            return UIImage(CGImage: thumbnailCGImage)
+        } catch let err {
+            print(err)
+        }
+        
+        return nil
     }
     
     private func handleImageSelectedForInfo(info: [String: AnyObject]) {
