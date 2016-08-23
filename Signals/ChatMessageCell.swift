@@ -8,20 +8,39 @@
 //
 //  Custom ChatMessageCell class
 import UIKit
+import AVFoundation
 
 class ChatMessageCell: UICollectionViewCell {
     
+    var message: Message?
+    
     var chatLogController: ChatLogController?
     
-    let playButton: UIButton = {
+    lazy var playButton: UIButton = {
         let button = UIButton(type: .System)
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "PlayButton")
         button.tintColor = UIColor.whiteColor()
         button.setImage(image, forState: .Normal)
+        button.addTarget(self, action: #selector(handlePlay), forControlEvents: .TouchUpInside)
         
         return button
     }()
+    
+    func handlePlay() {
+        if let videoUrlString = message?.videoUrl, url = NSURL(string: videoUrlString) {
+            let player = AVPlayer(URL: url)
+            
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = bubbleView.bounds
+            
+            bubbleView.layer.addSublayer(playerLayer)
+            
+            player.play()
+            
+            print("Attempting to play video...")
+        }
+    }
     
     let chatTextView: UITextView = {
         let textView = UITextView()

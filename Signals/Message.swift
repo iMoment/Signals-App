@@ -21,6 +21,8 @@ class Message: NSObject {
     var imageWidth: NSNumber?
     var imageHeight: NSNumber?
     
+    var videoUrl: String?
+    
     func chatPartnerId() -> String? {
         return fromSenderID == FIRAuth.auth()?.currentUser?.uid ? toRecipientID : fromSenderID
     }
@@ -36,5 +38,7 @@ class Message: NSObject {
         imageUrl = dictionary["imageUrl"] as? String
         imageWidth = dictionary["imageWidth"] as? NSNumber
         imageHeight = dictionary["imageHeight"] as? NSNumber
+        
+        videoUrl = dictionary["videoUrl"] as? String
     }
 }
