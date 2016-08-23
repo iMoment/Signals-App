@@ -152,7 +152,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     private func handleVideoSelectedForUrl(url: NSURL) {
         let filename = "message_videos"
-        FIRStorage.storage().reference().child(filename).putFile(url, metadata: nil, completion: { (metadata, error) in
+        let uploadTask = FIRStorage.storage().reference().child(filename).putFile(url, metadata: nil, completion: { (metadata, error) in
             
             if error != nil {
                 print("Failed upload of video:", error)
@@ -163,6 +163,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 print(storageUrl)
             }
         })
+        
+        uploadTask.observeStatus(.Progress) { (snapshot) in
+            if let completedUnitCount = snapshot.progress?.completedUnitCount {
+                self.navigationItem.title = String(completedUnitCount)
+            }
+        }
+        //  After successful upload
+        uploadTask.observeStatus(.Success) { (snapshot) in
+            self.navigationItem.title = self.user?.name
+        }
     }
     
     private func handleImageSelectedForInfo(info: [String: AnyObject]) {
