@@ -25,6 +25,16 @@ class MessagesController: UITableViewController {
         checkIfUserIsLoggedIn()
         
         tableView.registerClass(UserCell.self, forCellReuseIdentifier: cellId)
+        
+        tableView.allowsMultipleSelectionDuringEditing = true
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        print(indexPath.row)
     }
     
     var messages = [Message]()
