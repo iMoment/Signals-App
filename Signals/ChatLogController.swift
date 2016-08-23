@@ -9,6 +9,8 @@
 //  ChatLogController handles view of present conversation with User
 import UIKit
 import Firebase
+import MobileCoreServices
+import AVFoundation
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -132,6 +134,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         imagePickerController.allowsEditing = true
         imagePickerController.delegate = self
+        imagePickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
         
         presentViewController(imagePickerController, animated: true, completion: nil)
     }
