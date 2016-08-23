@@ -16,6 +16,14 @@ class ChatMessageCell: UICollectionViewCell {
     
     var chatLogController: ChatLogController?
     
+    let loadingIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.hidesWhenStopped = true
+        
+        return activityIndicatorView
+    }()
+    
     lazy var playButton: UIButton = {
         let button = UIButton(type: .System)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -27,19 +35,32 @@ class ChatMessageCell: UICollectionViewCell {
         return button
     }()
     
+    var player: AVPlayer?
+    var playerLayer: AVPlayerLayer?
+    
     func handlePlay() {
         if let videoUrlString = message?.videoUrl, url = NSURL(string: videoUrlString) {
-            let player = AVPlayer(URL: url)
+            player = AVPlayer(URL: url)
             
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = bubbleView.bounds
+            playerLayer = AVPlayerLayer(player: player)
+            playerLayer?.frame = bubbleView.bounds
             
-            bubbleView.layer.addSublayer(playerLayer)
+            bubbleView.layer.addSublayer(playerLayer!)
             
-            player.play()
+            player?.play()
+            loadingIndicatorView.startAnimating()
+            playButton.hidden = true
             
             print("Attempting to play video...")
         }
+    }
+    
+    //  TODO: Reset the cell
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        playerLayer?.removeFromSuperlayer()
+        player?.pause()
+        loadingIndicatorView.stopAnimating()
     }
     
     let chatTextView: UITextView = {
@@ -89,6 +110,10 @@ class ChatMessageCell: UICollectionViewCell {
     }()
     
     func handleZoomOnTap(tapGesture: UITapGestureRecognizer) {
+        if message?.videoUrl != nil {
+            return
+        }
+        
         if let imageView = tapGesture.view as? UIImageView {
             self.chatLogController?.performZoomForImageOnTap(imageView)
         }
@@ -116,6 +141,12 @@ class ChatMessageCell: UICollectionViewCell {
         playButton.centerYAnchor.constraintEqualToAnchor(bubbleView.centerYAnchor).active = true
         playButton.widthAnchor.constraintEqualToConstant(75).active = true
         playButton.heightAnchor.constraintEqualToConstant(75).active = true
+        
+        bubbleView.addSubview(loadingIndicatorView)
+        loadingIndicatorView.centerXAnchor.constraintEqualToAnchor(bubbleView.centerXAnchor).active = true
+        loadingIndicatorView.centerYAnchor.constraintEqualToAnchor(bubbleView.centerYAnchor).active = true
+        loadingIndicatorView.widthAnchor.constraintEqualToConstant(75).active = true
+        loadingIndicatorView.heightAnchor.constraintEqualToConstant(75).active = true
         
         profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
         profileImageView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
