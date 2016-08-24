@@ -4,9 +4,9 @@
 //
 //  Created by Stanley Pan on 8/18/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-
 //
-//  Custom ChatMessageCell class
+//  Custom ChatMessageCell Class
+
 import UIKit
 import AVFoundation
 
@@ -55,7 +55,7 @@ class ChatMessageCell: UICollectionViewCell {
         }
     }
     
-    //  TODO: Reset the cell
+    //  Reset the cell
     override func prepareForReuse() {
         super.prepareForReuse()
         playerLayer?.removeFromSuperlayer()
@@ -130,6 +130,7 @@ class ChatMessageCell: UICollectionViewCell {
         addSubview(chatTextView)
         addSubview(profileImageView)
         
+        //  iOS9 Constraint Anchors
         bubbleView.addSubview(messageImageView)
         messageImageView.leftAnchor.constraintEqualToAnchor(bubbleView.leftAnchor).active = true
         messageImageView.topAnchor.constraintEqualToAnchor(bubbleView.topAnchor).active = true
@@ -153,11 +154,9 @@ class ChatMessageCell: UICollectionViewCell {
         profileImageView.widthAnchor.constraintEqualToConstant(32).active = true
         profileImageView.heightAnchor.constraintEqualToConstant(32).active = true
         
-        //  iOS9 Constraint Anchors
         bubbleRightAnchor = bubbleView.rightAnchor.constraintEqualToAnchor(self.rightAnchor, constant: -8)
         bubbleRightAnchor?.active = true
         bubbleLeftAnchor = bubbleView.leftAnchor.constraintEqualToAnchor(profileImageView.rightAnchor, constant: 8)
-//        bubbleLeftAnchor?.active = false
         bubbleView.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
         bubbleView.heightAnchor.constraintEqualToAnchor(self.heightAnchor).active = true
         bubbleWidthAnchor = bubbleView.widthAnchor.constraintEqualToConstant(275)
