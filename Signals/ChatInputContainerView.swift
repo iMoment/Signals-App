@@ -57,7 +57,7 @@ class ChatInputContainerView: UIView, UITextFieldDelegate {
         
         backgroundColor = UIColor.whiteColor()
         
-        //  iOS 9 Constraint Anchors
+        // MARK: iOS 9 Constraint Anchors
         addSubview(uploadImageView)
         uploadImageView.leftAnchor.constraintEqualToAnchor(leftAnchor, constant: 8).active = true
         uploadImageView.centerYAnchor.constraintEqualToAnchor(centerYAnchor).active = true

@@ -81,7 +81,7 @@ class UserCell: UITableViewCell {
         addSubview(profileImageView)
         addSubview(timeLabel)
         
-        //  iOS 9 Constraint Anchors
+        // MARK: iOS 9 Constraint Anchors
         profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
         profileImageView.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
         profileImageView.widthAnchor.constraintEqualToConstant(48).active = true

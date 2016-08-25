@@ -4,10 +4,11 @@
 //
 //  Created by Stanley Pan on 8/16/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-
 //
-//  Creates cache to hold downloaded images, will fetch new images otherwise
+//  Image cache to hold downloaded images
+
 import UIKit
+import Firebase
 
 let imageCache = NSCache()
 
