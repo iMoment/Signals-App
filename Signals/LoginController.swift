@@ -4,9 +4,9 @@
 //
 //  Created by Stanley Pan on 8/14/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-
 //
-//  LoginController to handle Logging In or Registering a User
+//  LoginController - Handles logging in or registering a user
+
 import UIKit
 import Firebase
 
@@ -169,7 +169,7 @@ class LoginController: UIViewController {
     var emailTextFieldHeightAnchor: NSLayoutConstraint?
     var passwordTextFieldHeightAnchor: NSLayoutConstraint?
     
-    // MARK: UI Constraints
+    // MARK: iOS9 Constraint Anchors
     func setupUserInputContainerView() {
         userInputContainerView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
         userInputContainerView.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor).active = true
