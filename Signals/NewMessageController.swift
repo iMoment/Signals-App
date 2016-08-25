@@ -4,9 +4,9 @@
 //
 //  Created by Stanley Pan on 8/15/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-
 //
-//  NewMessageController for selecting a User and creating a new chat log
+//  NewMessageController - Select user to send message
+
 import UIKit
 import Firebase
 
@@ -30,7 +30,6 @@ class NewMessageController: UITableViewController {
         FIRDatabase.database().reference().child("users").observeEventType(.ChildAdded, withBlock: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
-                print(snapshot)
                 let user = User()
                 user.id = snapshot.key
                 
@@ -76,7 +75,6 @@ class NewMessageController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         dismissViewControllerAnimated(true) { 
-            print("Dismissed Controller")
             let user = self.users[indexPath.row]
             self.messagesController?.showChatControllerForUser(user)
         }
