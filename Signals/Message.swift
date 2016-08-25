@@ -4,18 +4,18 @@
 //
 //  Created by Stanley Pan on 8/16/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-
 //
 //  Class to hold Message object
+
 import UIKit
 import Firebase
 
 class Message: NSObject {
     
-    var fromSenderID: String?
+    var senderID: String?
     var text: String?
     var timestamp: NSNumber?
-    var toRecipientID: String?
+    var recipientID: String?
     
     var imageUrl: String?
     var imageWidth: NSNumber?
@@ -24,16 +24,16 @@ class Message: NSObject {
     var videoUrl: String?
     
     func chatPartnerId() -> String? {
-        return fromSenderID == FIRAuth.auth()?.currentUser?.uid ? toRecipientID : fromSenderID
+        return senderID == FIRAuth.auth()?.currentUser?.uid ? recipientID : senderID
     }
     
     init(dictionary: [String: AnyObject]) {
         super.init()
         
-        fromSenderID = dictionary["fromSenderID"] as? String
+        senderID = dictionary["senderID"] as? String
         text = dictionary["text"] as? String
         timestamp = dictionary["timestamp"] as? NSNumber
-        toRecipientID = dictionary["toRecipientID"] as? String
+        recipientID = dictionary["recipientID"] as? String
         
         imageUrl = dictionary["imageUrl"] as? String
         imageWidth = dictionary["imageWidth"] as? NSNumber
