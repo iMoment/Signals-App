@@ -143,7 +143,6 @@ class LoginController: UIViewController {
         passwordTextFieldHeightAnchor?.active = false
         passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraintEqualToAnchor(userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
         passwordTextFieldHeightAnchor?.active = true
-
     }
     
     // MARK: viewDidLoad

@@ -4,9 +4,9 @@
 //
 //  Created by Stanley Pan on 8/14/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-
 //
-//  MessagesController to display ongoing conversations
+//  MessagesController - Displays ongoing conversations
+
 import UIKit
 import Firebase
 
@@ -34,7 +34,6 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        print(indexPath.row)
         
         guard let uid = FIRAuth.auth()?.currentUser?.uid else {
             return
@@ -52,11 +51,6 @@ class MessagesController: UITableViewController {
                 
                 self.messageDictionary.removeValueForKey(chatPartnerId)
                 self.attemptReloadOfTable()
-                
-                //  Unsafe way to delete, but first implement
-//                self.messages.removeAtIndex(indexPath.row)
-//                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-                
             })
         }
     }
@@ -83,9 +77,6 @@ class MessagesController: UITableViewController {
             }, withCancelBlock: nil)
         
         ref.observeEventType(.ChildRemoved, withBlock: { (snapshot) in
-            
-            print(snapshot.key)
-            print(self.messageDictionary)
             
             self.messageDictionary.removeValueForKey(snapshot.key)
             self.attemptReloadOfTable()
@@ -223,18 +214,17 @@ class MessagesController: UITableViewController {
         profileImageView.contentMode = .ScaleAspectFill
         profileImageView.layer.cornerRadius = 20
         profileImageView.clipsToBounds = true
-        containerView.addSubview(profileImageView)
-        
         if let profileImageUrl = user.profileImageUrl {
             profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
         }
+        containerView.addSubview(profileImageView)
         
         let nameLabel = UILabel()
         nameLabel.text = user.name
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(nameLabel)
         
-        // MARK: Constraint anchors
+        // MARK: iOS9 Constraint Anchors
         profileImageView.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor).active = true
         profileImageView.centerYAnchor.constraintEqualToAnchor(containerView.centerYAnchor).active = true
         profileImageView.widthAnchor.constraintEqualToConstant(40).active = true
@@ -258,6 +248,7 @@ class MessagesController: UITableViewController {
     }
     
     func handleLogout() {
+        
         do {
             try FIRAuth.auth()?.signOut()
         } catch let logoutError {

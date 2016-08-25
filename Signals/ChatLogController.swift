@@ -277,7 +277,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
         }
         
-        if message.fromSenderID == FIRAuth.auth()?.currentUser?.uid {
+        if message.senderID == FIRAuth.auth()?.currentUser?.uid {
             //  Message will be blue bubbleView
             cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
             cell.chatTextView.textColor = UIColor.whiteColor()
