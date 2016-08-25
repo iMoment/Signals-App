@@ -4,9 +4,9 @@
 //
 //  Created by Stanley Pan on 8/15/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-
 //
 //  LoginController extension holding key functions
+
 import UIKit
 import Firebase
 
@@ -14,7 +14,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     
     func handleRegister() {
         guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
-            print("Form is not valid.  Authentication failed.")
+            print("Form is not valid. Authentication failed.")
             return
         }
         
@@ -80,15 +80,13 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         presentViewController(picker, animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String:AnyObject]) {
         
         var selectedImageFromPicker: UIImage?
         
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            print(editedImage.size)
             selectedImageFromPicker = editedImage
         } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            print(originalImage.size)
             selectedImageFromPicker = originalImage
         }
         
@@ -100,7 +98,6 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        print("Picker cancelled.")
         dismissViewControllerAnimated(true, completion: nil)
     }
 }
