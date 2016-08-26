@@ -4,17 +4,15 @@
 //
 //  Created by Stanley Pan on 8/16/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
-
 //
-//  ChatLogController handles view of present conversation with User
+//  ChatLogController - Present conversation with user
+
 import UIKit
 import Firebase
 import MobileCoreServices
 import AVFoundation
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    let cellId = "cellId"
     
     var user: User? {
         didSet {
@@ -44,18 +42,19 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 self.messages.append(Message(dictionary: dictionary))
                 dispatch_async(dispatch_get_main_queue(), {
                     self.collectionView?.reloadData()
-                    //  TODO: Scroll to the last index for viewers to read easier
-                    if self.messages.count > 0 {
-                        let indexPath = NSIndexPath(forItem: self.messages.count - 1, inSection: 0)
-                        self.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
-                    }
-                    
+                    // Scroll to the last index, still a bug
+                    // TODO: Introduce delay
+                    let indexPath = NSIndexPath(forItem: self.messages.count - 1, inSection: 0)
+                    print("Messages count is: \(self.messages.count - 1)")
+                    self.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
                 })
                 
                 }, withCancelBlock: nil)
             
             }, withCancelBlock: nil)
     }
+    
+    let cellId = "cellId"
     
     // MARK: viewDidLoad
     override func viewDidLoad() {
@@ -75,10 +74,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     lazy var inputContainerView: ChatInputContainerView = {
         let chatInputContainerView = ChatInputContainerView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
         chatInputContainerView.chatLogController = self
+        
         return chatInputContainerView
     }()
     
-    func handleUploadImage() {
+    func handleUploadMedia() {
         let imagePickerController = UIImagePickerController()
         
         imagePickerController.allowsEditing = true
@@ -150,10 +150,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         var selectedImageFromPicker: UIImage?
         
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            print(editedImage.size)
             selectedImageFromPicker = editedImage
         } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            print(originalImage.size)
             selectedImageFromPicker = originalImage
         }
         
@@ -219,26 +217,26 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    var containerViewBottomAnchor: NSLayoutConstraint?
-    
-    func handleKeyboardWillShow(notification: NSNotification) {
-        let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue()
-        let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue
-        //  Move the input area up relative to the height of the keyboard
-        containerViewBottomAnchor?.constant = -keyboardFrame!.height
-        UIView.animateWithDuration(keyboardDuration!) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func handleKeyboardWillHide(notification: NSNotification) {
-        let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue
-        //  Move the input area up relative to the height of the keyboard
-        containerViewBottomAnchor?.constant = 0
-        UIView.animateWithDuration(keyboardDuration!) {
-            self.view.layoutIfNeeded()
-        }
-    }
+//    var containerViewBottomAnchor: NSLayoutConstraint?
+//    
+//    func handleKeyboardWillShow(notification: NSNotification) {
+//        let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue()
+//        let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue
+//        //  Move the input area up relative to the height of the keyboard
+//        containerViewBottomAnchor?.constant = -keyboardFrame!.height
+//        UIView.animateWithDuration(keyboardDuration!) {
+//            self.view.layoutIfNeeded()
+//        }
+//    }
+//    
+//    func handleKeyboardWillHide(notification: NSNotification) {
+//        let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue
+//        //  Move the input area up relative to the height of the keyboard
+//        containerViewBottomAnchor?.constant = 0
+//        UIView.animateWithDuration(keyboardDuration!) {
+//            self.view.layoutIfNeeded()
+//        }
+//    }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
@@ -348,7 +346,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let fromId = FIRAuth.auth()!.currentUser!.uid
         let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
         
-        var values: [String: AnyObject] = ["toRecipientID": toId, "fromSenderID": fromId, "timestamp": timestamp]
+        var values: [String: AnyObject] = ["recipientID": toId, "senderID": fromId, "timestamp": timestamp]
         properties.forEach({values[$0] = $1})
         
         childRef.updateChildValues(values) { (error, ref) in

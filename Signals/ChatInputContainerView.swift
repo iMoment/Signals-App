@@ -15,7 +15,7 @@ class ChatInputContainerView: UIView, UITextFieldDelegate {
         didSet {
             sendButton.addTarget(chatLogController, action: #selector(ChatLogController.handleSendMessage), forControlEvents: .TouchUpInside)
             
-            uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: chatLogController, action: #selector(ChatLogController.handleUploadImage)))
+            uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: chatLogController, action: #selector(ChatLogController.handleUploadMedia)))
         }
     }
     
