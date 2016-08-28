@@ -22,6 +22,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     var messages = [Message]()
+    var indexPath: NSIndexPath?
     
     func observeMessages() {
         guard let uid = FIRAuth.auth()?.currentUser?.uid, toId = user?.id else {
@@ -40,19 +41,31 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 }
                 
                 self.messages.append(Message(dictionary: dictionary))
+                // TODO: delay here
                 dispatch_async(dispatch_get_main_queue(), {
                     self.collectionView?.reloadData()
-                    // Scroll to the last index, still a bug
-                    // TODO: Introduce delay
-                    let indexPath = NSIndexPath(forItem: self.messages.count - 1, inSection: 0)
-                    print("Messages count is: \(self.messages.count - 1)")
-                    self.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
+                    self.indexPath = NSIndexPath(forItem: self.messages.count - 1, inSection: 0)
+                    print(self.indexPath)
+                    self.attemptScrollTable()
                 })
+                
                 
                 }, withCancelBlock: nil)
             
             }, withCancelBlock: nil)
     }
+    
+    var timer: NSTimer?
+    
+    private func attemptScrollTable() {
+        self.timer?.invalidate()
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(handleScrollTable), userInfo: nil, repeats: false)
+    }
+    
+    func handleScrollTable() {
+            self.collectionView?.scrollToItemAtIndexPath(indexPath!, atScrollPosition: .Bottom, animated: true)
+    }
+    
     
     let cellId = "cellId"
     
