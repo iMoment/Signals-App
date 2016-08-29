@@ -59,7 +59,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     private func attemptScrollTable() {
         self.timer?.invalidate()
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(handleScrollTable), userInfo: nil, repeats: false)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(handleScrollTable), userInfo: nil, repeats: false)
     }
     
     func handleScrollTable() {

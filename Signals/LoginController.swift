@@ -125,6 +125,15 @@ class LoginController: UIViewController {
         return segmentedControl
     }()
     
+    let errorLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Email was invalid. Try again."
+        label.textAlignment = .Center
+        label.textColor = UIColor.whiteColor()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     //  Toggles userInputContainerView according to loginRegisterSegmentedControl value
     func handleLoginRegisterChange() {
         let title = loginRegisterSegmentedControl.titleForSegmentAtIndex(loginRegisterSegmentedControl.selectedSegmentIndex)
@@ -155,11 +164,13 @@ class LoginController: UIViewController {
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
         view.addSubview(loginRegisterSegmentedControl)
+        view.addSubview(errorLabel)
         
         setupUserInputContainerView()
         setupLoginRegisterButton()
         setupProfileImageView()
         setupLoginRegisterSegmentedControl()
+        setupErrorLabel()
     }
     
     // MARK: UI Height Constraint Reference Variables
@@ -230,6 +241,13 @@ class LoginController: UIViewController {
         loginRegisterSegmentedControl.bottomAnchor.constraintEqualToAnchor(userInputContainerView.topAnchor, constant: -12).active = true
         loginRegisterSegmentedControl.widthAnchor.constraintEqualToAnchor(userInputContainerView.widthAnchor).active = true
         loginRegisterSegmentedControl.heightAnchor.constraintEqualToConstant(36).active = true
+    }
+    
+    func setupErrorLabel() {
+        errorLabel.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
+        errorLabel.topAnchor.constraintEqualToAnchor(loginRegisterButton.bottomAnchor, constant: 12).active = true
+        errorLabel.widthAnchor.constraintEqualToAnchor(loginRegisterButton.widthAnchor).active = true
+        errorLabel.heightAnchor.constraintEqualToConstant(50).active = true
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
