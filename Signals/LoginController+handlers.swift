@@ -14,14 +14,14 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     
     func handleRegister() {
         guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
-            print("Form is not valid. Authentication failed.")
+            errorLabel.text = "Form is not valid. Authentication failed."
             return
         }
         
         FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
             
             if error != nil {
-                print(error)
+                self.errorLabel.text = "Please fill in all fields."
                 return
             }
             

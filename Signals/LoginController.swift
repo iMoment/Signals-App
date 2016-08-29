@@ -46,14 +46,14 @@ class LoginController: UIViewController {
     
     func handleLogin() {
         guard let email = emailTextField.text, password = passwordTextField.text else {
-            print("Form is not valid. Authentication failed.")
+            errorLabel.text = "Form is not valid. Authentication failed."
             return
         }
         
         FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
             
             if error != nil {
-                print(error)
+                self.errorLabel.text = "The email or password entered was incorrect."
                 return
             }
             //  Successfully logged in User
@@ -127,7 +127,6 @@ class LoginController: UIViewController {
     
     let errorLabel: UILabel = {
         let label = UILabel()
-        label.text = "Email was invalid. Try again."
         label.textAlignment = .Center
         label.textColor = UIColor.whiteColor()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -245,7 +244,7 @@ class LoginController: UIViewController {
     
     func setupErrorLabel() {
         errorLabel.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
-        errorLabel.topAnchor.constraintEqualToAnchor(loginRegisterButton.bottomAnchor, constant: 12).active = true
+        errorLabel.topAnchor.constraintEqualToAnchor(loginRegisterButton.bottomAnchor, constant: 16).active = true
         errorLabel.widthAnchor.constraintEqualToAnchor(loginRegisterButton.widthAnchor).active = true
         errorLabel.heightAnchor.constraintEqualToConstant(50).active = true
     }
