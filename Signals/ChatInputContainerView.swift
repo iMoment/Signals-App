@@ -22,8 +22,9 @@ class ChatInputContainerView: UIView, UITextFieldDelegate {
     let uploadImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.userInteractionEnabled = true
-        imageView.image = UIImage(named: "InsertChatMedia")
+        imageView.image = UIImage(named: "add")
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .ScaleAspectFill
         
         return imageView
     }()

@@ -17,7 +17,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var user: User? {
         didSet {
             navigationItem.title = user?.name
-            observeMessages()
+//            observeMessages()
         }
     }
     
@@ -41,36 +41,21 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 }
                 
                 self.messages.append(Message(dictionary: dictionary))
-                // TODO: delay here
+                
                 dispatch_async(dispatch_get_main_queue(), {
                     self.collectionView?.reloadData()
-//                    self.indexPath = NSIndexPath(index: self.messages.count - 1)
-//                    self.indexPath = NSIndexPath(forItem: self.messages.count - 1, inSection: 0)
-//                    print(self.indexPath)
-//                    self.attemptScrollTable()
+                    
                     let indexPath = NSIndexPath(forItem: self.messages.count - 1, inSection: 0)
                     print("IndexPath is: \(self.messages.count - 1)")
                     print("Messages array contains \(self.messages.count) messages.")
+                    
                     self.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
                 })
-                
                 
             }, withCancelBlock: nil)
             
         }, withCancelBlock: nil)
     }
-    
-//    var timer: NSTimer?
-//    
-//    private func attemptScrollTable() {
-//        self.timer?.invalidate()
-//        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(handleScrollTable), userInfo: nil, repeats: false)
-//    }
-//    
-//    func handleScrollTable() {
-//        self.collectionView?.scrollToItemAtIndexPath(indexPath!, atScrollPosition: .Bottom, animated: true)
-//    }
-    
     
     let cellId = "cellId"
     
@@ -87,6 +72,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.keyboardDismissMode = .Interactive
         
         setupKeyboardObservers()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        observeMessages()
     }
     
     lazy var inputContainerView: ChatInputContainerView = {
