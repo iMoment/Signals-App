@@ -13,12 +13,12 @@ import Firebase
 extension LoginController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func handleRegister() {
-        guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
+        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
             errorLabel.text = "Form is not valid. Authentication failed."
             return
         }
         
-        FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
+        FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error) in
             
             if error != nil {
                 self.errorLabel.text = "Please fill in all fields."
@@ -30,11 +30,11 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             }
             
             // Successfully authenticated user
-            let imageName = NSUUID().UUIDString
+            let imageName = UUID().uuidString
             let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
-            if let profileImage = self.profileImageView.image, uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
-                storageRef.putData(uploadData, metadata: nil, completion: { (metaData, error) in
+            if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
+                storageRef.put(uploadData, metadata: nil, completion: { (metaData, error) in
                     
                     if error != nil {
                         print(error)
@@ -45,14 +45,14 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                         
                         let values = ["name": name, "email": email, "profileImageUrl": profileImageUrl]
                         
-                        self.registerUserIntoDatabaseWithUID(uid, values: values)
+                        self.registerUserIntoDatabaseWithUID(uid, values: values as [String : AnyObject])
                     }
                 })
             }
         })
     }
     
-    private func registerUserIntoDatabaseWithUID(uid: String, values: [String:AnyObject]) {
+    fileprivate func registerUserIntoDatabaseWithUID(_ uid: String, values: [String:AnyObject]) {
         let ref = FIRDatabase.database().reference()
         let usersReference = ref.child("users").child(uid)
         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
@@ -63,11 +63,11 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             }
             
             let user = User()
-            user.setValuesForKeysWithDictionary(values)
+            user.setValuesForKeys(values)
             
             self.messagesController?.setupNavBarWithUser(user)
             
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         })
     }
     
@@ -77,10 +77,10 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         picker.delegate = self
         picker.allowsEditing = true
         
-        presentViewController(picker, animated: true, completion: nil)
+        present(picker, animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String:AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String:Any]) {
         
         var selectedImageFromPicker: UIImage?
         
@@ -94,10 +94,10 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             profileImageView.image = selectedImage
         }
         
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 }
