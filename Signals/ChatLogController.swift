@@ -46,8 +46,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     self.collectionView?.reloadData()
                     
                     let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                    print("IndexPath is: \(self.messages.count - 1)")
-                    print("Messages array contains \(self.messages.count) messages.")
                     
                     self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                 })

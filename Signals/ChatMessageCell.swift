@@ -13,7 +13,6 @@ import AVFoundation
 class ChatMessageCell: UICollectionViewCell {
     
     var message: Message?
-    
     var chatLogController: ChatLogController?
     
     let loadingIndicatorView: UIActivityIndicatorView = {
@@ -50,8 +49,6 @@ class ChatMessageCell: UICollectionViewCell {
             player?.play()
             loadingIndicatorView.startAnimating()
             playButton.isHidden = true
-            
-            print("Attempting to play video...")
         }
     }
     
