@@ -9,6 +9,7 @@
 
 import UIKit
 import Firebase
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -29,7 +30,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
 class MessagesController: UITableViewController {
     
     let cellId = "cellId"
@@ -39,13 +39,11 @@ class MessagesController: UITableViewController {
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleNewMessage))
         
         checkIfUserIsLoggedIn()
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
-        
         tableView.allowsMultipleSelectionDuringEditing = true
     }
     
@@ -92,16 +90,16 @@ class MessagesController: UITableViewController {
                 let messageId = snapshot.key
                 self.fetchMessageWithMessageId(messageId)
                 
-                }, withCancel: nil)
-            
             }, withCancel: nil)
+            
+        }, withCancel: nil)
         
         ref.observe(.childRemoved, with: { (snapshot) in
             
             self.messageDictionary.removeValue(forKey: snapshot.key)
             self.attemptReloadOfTable()
             
-            }, withCancel: nil)
+        }, withCancel: nil)
     }
     
     fileprivate func fetchMessageWithMessageId(_ messageId: String) {
@@ -119,7 +117,7 @@ class MessagesController: UITableViewController {
                 self.attemptReloadOfTable()
             }
             
-            }, withCancel: nil)
+        }, withCancel: nil)
     }
     
     fileprivate func attemptReloadOfTable() {
@@ -132,9 +130,7 @@ class MessagesController: UITableViewController {
     func handleReloadTable() {
         self.messages = Array(self.messageDictionary.values)
         self.messages.sort(by: { (message1, message2) -> Bool in
-            
             return message1.timestamp?.int32Value > message2.timestamp?.int32Value
-            
         })
         
         DispatchQueue.main.async(execute: {
@@ -179,7 +175,7 @@ class MessagesController: UITableViewController {
             user.setValuesForKeys(dictionary)
             self.showChatControllerForUser(user)
             
-            }, withCancel: nil)
+        }, withCancel: nil)
     }
     
     func handleNewMessage() {
@@ -206,13 +202,12 @@ class MessagesController: UITableViewController {
         FIRDatabase.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
-                
                 let user = User()
                 user.setValuesForKeys(dictionary)
                 self.setupNavBarWithUser(user)
             }
             
-            }, withCancel: nil)
+        }, withCancel: nil)
     }
     
     func setupNavBarWithUser(_ user: User) {
@@ -234,6 +229,7 @@ class MessagesController: UITableViewController {
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 20
         profileImageView.clipsToBounds = true
+        
         if let profileImageUrl = user.profileImageUrl {
             profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
         }
