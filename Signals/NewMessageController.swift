@@ -41,7 +41,7 @@ class NewMessageController: UITableViewController {
                 })
             }
             
-            }, withCancel: nil)
+        }, withCancel: nil)
     }
     
     func handleCancel() {
