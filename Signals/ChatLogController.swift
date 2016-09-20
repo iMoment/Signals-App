@@ -416,8 +416,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 }, completion: { (completed) in
 //                    do nothing
             })
-            
-          }
+        }
     }
     
     func handleZoomOut(_ tapGesture: UITapGestureRecognizer) {
@@ -436,7 +435,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     zoomedOutImageView.removeFromSuperview()
                     self.startingImageView?.isHidden = false
             })
-            
         }
     }
 }

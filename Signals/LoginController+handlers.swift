@@ -44,7 +44,6 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                     if let profileImageUrl = metaData?.downloadURL()?.absoluteString {
                         
                         let values = ["name": name, "email": email, "profileImageUrl": profileImageUrl]
-                        
                         self.registerUserIntoDatabaseWithUID(uid, values: values as [String : AnyObject])
                     }
                 })
@@ -66,7 +65,6 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             user.setValuesForKeys(values)
             
             self.messagesController?.setupNavBarWithUser(user)
-            
             self.dismiss(animated: true, completion: nil)
         })
     }

@@ -14,6 +14,15 @@ class LoginController: UIViewController {
     
     var messagesController: MessagesController?
     
+    let backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "background")
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
+    }()
+    
     let userInputContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
@@ -26,7 +35,7 @@ class LoginController: UIViewController {
     
     lazy var loginRegisterButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
+        button.backgroundColor = UIColor(red: 80/255, green: 101/255, blue: 161/255, alpha: 0.45)
         button.setTitle("Register", for: UIControlState())
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: UIControlState())
@@ -157,14 +166,21 @@ class LoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
+        applyMotionEffect(toView: backgroundImageView, magnitude: 10)
+        applyMotionEffect(toView: profileImageView, magnitude: -30)
+        applyMotionEffect(toView: loginRegisterSegmentedControl, magnitude: -30)
+        applyMotionEffect(toView: userInputContainerView, magnitude: -30)
+        applyMotionEffect(toView: loginRegisterButton, magnitude: -30)
+        applyMotionEffect(toView: errorLabel, magnitude: -30)
         
+        view.addSubview(backgroundImageView)
         view.addSubview(userInputContainerView)
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
         view.addSubview(loginRegisterSegmentedControl)
         view.addSubview(errorLabel)
         
+        setupBackgroundImageView()
         setupUserInputContainerView()
         setupLoginRegisterButton()
         setupProfileImageView()
@@ -179,6 +195,13 @@ class LoginController: UIViewController {
     var passwordTextFieldHeightAnchor: NSLayoutConstraint?
     
     // MARK: iOS9 Constraint Anchors
+    func setupBackgroundImageView() {
+        backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -50).isActive = true
+        backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 50).isActive = true
+        backgroundImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -50).isActive = true
+        backgroundImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 50).isActive = true
+    }
+    
     func setupUserInputContainerView() {
         userInputContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         userInputContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -247,6 +270,21 @@ class LoginController: UIViewController {
         errorLabel.topAnchor.constraint(equalTo: loginRegisterButton.bottomAnchor, constant: 16).isActive = true
         errorLabel.widthAnchor.constraint(equalTo: loginRegisterButton.widthAnchor).isActive = true
         errorLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    func applyMotionEffect(toView view: UIView, magnitude: Float) {
+        let xMotion = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
+        xMotion.minimumRelativeValue = -magnitude
+        xMotion.maximumRelativeValue = magnitude
+        
+        let yMotion = UIInterpolatingMotionEffect(keyPath: "center.y", type: .tiltAlongVerticalAxis)
+        yMotion.minimumRelativeValue = -magnitude
+        yMotion.maximumRelativeValue = magnitude
+        
+        let group = UIMotionEffectGroup()
+        group.motionEffects = [xMotion, yMotion]
+        
+        view.addMotionEffect(group)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
