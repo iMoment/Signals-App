@@ -85,9 +85,10 @@ class LoginController: UIViewController {
         return view
     }()
     
-    let nameTextField: UITextField = {
+    lazy var nameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Name"
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
@@ -101,9 +102,10 @@ class LoginController: UIViewController {
         return view
     }()
     
-    let emailTextField: UITextField = {
+    lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Email address"
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
@@ -117,9 +119,10 @@ class LoginController: UIViewController {
         return view
     }()
     
-    let passwordTextField: UITextField = {
+    lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Password"
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isSecureTextEntry = true
         
@@ -128,7 +131,7 @@ class LoginController: UIViewController {
     
     lazy var loginRegisterButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 80/255, green: 101/255, blue: 161/255, alpha: 0.55)
+        button.backgroundColor = UIColor(red: 80/255, green: 101/255, blue: 161/255, alpha: 0.35)
         button.setTitle("Register", for: UIControlState())
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: UIControlState())
@@ -176,6 +179,7 @@ class LoginController: UIViewController {
     // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideKeyboard()
         
         applyMotionEffect(toView: backgroundImageView, magnitude: 10)
         applyMotionEffect(toView: appNameLabel, magnitude: -30)
@@ -215,19 +219,19 @@ class LoginController: UIViewController {
         backgroundImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -50).isActive = true
         backgroundImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 50).isActive = true
     }
-    
+
     func setupAppNameLabel() {
         appNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        appNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
+        appNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
         appNameLabel.widthAnchor.constraint(equalToConstant: 168).isActive = true
         appNameLabel.heightAnchor.constraint(equalToConstant: 136).isActive = true
     }
     
     func setupProfileImageView() {
         profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profileImageView.topAnchor.constraint(equalTo: appNameLabel.bottomAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 125).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 125).isActive = true
+        profileImageView.topAnchor.constraint(equalTo: appNameLabel.bottomAnchor, constant: -20).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
     
     func setupLoginRegisterSegmentedControl() {
