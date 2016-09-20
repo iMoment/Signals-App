@@ -23,6 +23,58 @@ class LoginController: UIViewController {
         return imageView
     }()
     
+    let appNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Signals"
+        label.font = UIFont(name: "Zapfino", size: 40)
+        label.textColor = UIColor.white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    lazy var profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "InsertImage")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImage)))
+        imageView.isUserInteractionEnabled = true
+        
+        return imageView
+    }()
+    
+    lazy var loginRegisterSegmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl(items: ["Login", "Register"])
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.tintColor = UIColor.white
+        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
+        
+        return segmentedControl
+    }()
+    
+    //  Toggles userInputContainerView according to loginRegisterSegmentedControl value
+    func handleLoginRegisterChange() {
+        let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
+        loginRegisterButton.setTitle(title, for: UIControlState())
+        
+        userInputContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
+        
+        nameTextFieldHeightAnchor?.isActive = false
+        nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
+        nameTextField.placeholder = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? "" : "Name"
+        nameTextFieldHeightAnchor?.isActive = true
+        
+        emailTextFieldHeightAnchor?.isActive = false
+        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        emailTextFieldHeightAnchor?.isActive = true
+        
+        passwordTextFieldHeightAnchor?.isActive = false
+        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        passwordTextFieldHeightAnchor?.isActive = true
+    }
+    
     let userInputContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
@@ -32,44 +84,6 @@ class LoginController: UIViewController {
         
         return view
     }()
-    
-    lazy var loginRegisterButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 80/255, green: 101/255, blue: 161/255, alpha: 0.45)
-        button.setTitle("Register", for: UIControlState())
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor.white, for: UIControlState())
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
-        
-        return button
-    }()
-    
-    func handleLoginRegister() {
-        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
-            handleLogin()
-        } else {
-            handleRegister()
-        }
-    }
-    
-    func handleLogin() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else {
-            errorLabel.text = "Form is not valid. Authentication failed."
-            return
-        }
-        
-        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
-            
-            if error != nil {
-                self.errorLabel.text = "The email or password entered was incorrect."
-                return
-            }
-            //  Successfully logged in User
-            self.messagesController?.fetchUserAndSetNavBarTitle()
-            self.dismiss(animated: true, completion: nil)
-        })
-    }
     
     let nameTextField: UITextField = {
         let textField = UITextField()
@@ -112,61 +126,59 @@ class LoginController: UIViewController {
         return textField
     }()
     
-    lazy var profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "InsertImage")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImage)))
-        imageView.isUserInteractionEnabled = true
+    lazy var loginRegisterButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor(red: 80/255, green: 101/255, blue: 161/255, alpha: 0.55)
+        button.setTitle("Register", for: UIControlState())
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: UIControlState())
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
         
-        return imageView
+        return button
     }()
     
-    lazy var loginRegisterSegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["Login", "Register"])
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.tintColor = UIColor.white
-        segmentedControl.selectedSegmentIndex = 1
-        segmentedControl.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
+    func handleLoginRegister() {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            handleLogin()
+        } else {
+            handleRegister()
+        }
+    }
+    
+    func handleLogin() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            errorLabel.text = "Form is not valid. Authentication failed."
+            return
+        }
         
-        return segmentedControl
-    }()
+        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
+            
+            if error != nil {
+                self.errorLabel.text = "The email or password entered was incorrect."
+                return
+            }
+            //  Successfully logged in User
+            self.messagesController?.fetchUserAndSetNavBarTitle()
+            self.dismiss(animated: true, completion: nil)
+        })
+    }
     
     let errorLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }()
-    
-    //  Toggles userInputContainerView according to loginRegisterSegmentedControl value
-    func handleLoginRegisterChange() {
-        let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
-        loginRegisterButton.setTitle(title, for: UIControlState())
-        
-        userInputContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
-        
-        nameTextFieldHeightAnchor?.isActive = false
-        nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
-        nameTextField.placeholder = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? "" : "Name"
-        nameTextFieldHeightAnchor?.isActive = true
-        
-        emailTextFieldHeightAnchor?.isActive = false
-        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        emailTextFieldHeightAnchor?.isActive = true
-        
-        passwordTextFieldHeightAnchor?.isActive = false
-        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        passwordTextFieldHeightAnchor?.isActive = true
-    }
     
     // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
         applyMotionEffect(toView: backgroundImageView, magnitude: 10)
+        applyMotionEffect(toView: appNameLabel, magnitude: -30)
         applyMotionEffect(toView: profileImageView, magnitude: -30)
         applyMotionEffect(toView: loginRegisterSegmentedControl, magnitude: -30)
         applyMotionEffect(toView: userInputContainerView, magnitude: -30)
@@ -174,17 +186,19 @@ class LoginController: UIViewController {
         applyMotionEffect(toView: errorLabel, magnitude: -30)
         
         view.addSubview(backgroundImageView)
-        view.addSubview(userInputContainerView)
-        view.addSubview(loginRegisterButton)
+        view.addSubview(appNameLabel)
         view.addSubview(profileImageView)
         view.addSubview(loginRegisterSegmentedControl)
+        view.addSubview(userInputContainerView)
+        view.addSubview(loginRegisterButton)
         view.addSubview(errorLabel)
         
         setupBackgroundImageView()
-        setupUserInputContainerView()
-        setupLoginRegisterButton()
+        setupAppNameLabel()
         setupProfileImageView()
         setupLoginRegisterSegmentedControl()
+        setupUserInputContainerView()
+        setupLoginRegisterButton()
         setupErrorLabel()
     }
     
@@ -202,9 +216,30 @@ class LoginController: UIViewController {
         backgroundImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 50).isActive = true
     }
     
+    func setupAppNameLabel() {
+        appNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        appNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
+        appNameLabel.widthAnchor.constraint(equalToConstant: 168).isActive = true
+        appNameLabel.heightAnchor.constraint(equalToConstant: 136).isActive = true
+    }
+    
+    func setupProfileImageView() {
+        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        profileImageView.topAnchor.constraint(equalTo: appNameLabel.bottomAnchor).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 125).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 125).isActive = true
+    }
+    
+    func setupLoginRegisterSegmentedControl() {
+        loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginRegisterSegmentedControl.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 12).isActive = true
+        loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: userInputContainerView.widthAnchor).isActive = true
+        loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 36).isActive = true
+    }
+    
     func setupUserInputContainerView() {
         userInputContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        userInputContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        userInputContainerView.topAnchor.constraint(equalTo: loginRegisterSegmentedControl.bottomAnchor, constant: 12).isActive = true
         userInputContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
         userInputContainerViewHeightAnchor = userInputContainerView.heightAnchor.constraint(equalToConstant: 150)
         userInputContainerViewHeightAnchor?.isActive = true
@@ -249,20 +284,6 @@ class LoginController: UIViewController {
         loginRegisterButton.topAnchor.constraint(equalTo: userInputContainerView.bottomAnchor, constant: 12).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: userInputContainerView.widthAnchor).isActive = true
         loginRegisterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    func setupProfileImageView() {
-        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -12).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-    }
-    
-    func setupLoginRegisterSegmentedControl() {
-        loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginRegisterSegmentedControl.bottomAnchor.constraint(equalTo: userInputContainerView.topAnchor, constant: -12).isActive = true
-        loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: userInputContainerView.widthAnchor).isActive = true
-        loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 36).isActive = true
     }
     
     func setupErrorLabel() {
