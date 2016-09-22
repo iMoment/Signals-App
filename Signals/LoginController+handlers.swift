@@ -12,6 +12,25 @@ import Firebase
 
 extension LoginController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
+    func handleLogin() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            errorLabel.text = "Form is not valid. Authentication failed."
+            return
+        }
+        
+        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
+            
+            if error != nil {
+                self.errorLabel.text = "The email or password entered was incorrect."
+                self.dismissKeyboard()
+                return
+            }
+            //  Successfully logged in User
+            self.messagesController?.fetchUserAndSetNavBarTitle()
+            self.dismiss(animated: true, completion: nil)
+        })
+    }
+    
     func handleRegister() {
         guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
             errorLabel.text = "Form is not valid. Authentication failed."
@@ -22,6 +41,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             if error != nil {
                 self.errorLabel.text = "Please fill in all fields."
+                self.dismissKeyboard()
                 return
             }
             

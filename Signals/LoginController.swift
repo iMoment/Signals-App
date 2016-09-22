@@ -27,7 +27,7 @@ class LoginController: UIViewController {
         let label = UILabel()
         label.text = "Signals"
         label.font = UIFont(name: "Zapfino", size: 40)
-        label.textColor = UIColor.white
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -76,9 +76,19 @@ class LoginController: UIViewController {
         passwordTextFieldHeightAnchor?.isActive = true
     }
     
+//    let userInputContainerView: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = UIColor.white
+//        view.layer.cornerRadius = 5
+//        view.layer.masksToBounds = true
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        return view
+//    }()
+    
     let userInputContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 0.25)
         view.layer.cornerRadius = 5
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -89,6 +99,7 @@ class LoginController: UIViewController {
     lazy var nameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Name"
+        textField.textColor = .white
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         
@@ -97,7 +108,7 @@ class LoginController: UIViewController {
     
     let nameSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 0.25)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -106,6 +117,7 @@ class LoginController: UIViewController {
     lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Email address"
+        textField.textColor = .white
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         
@@ -114,7 +126,7 @@ class LoginController: UIViewController {
     
     let emailSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 0.25)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -123,6 +135,7 @@ class LoginController: UIViewController {
     lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Password"
+        textField.textColor = .white
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isSecureTextEntry = true
@@ -134,9 +147,9 @@ class LoginController: UIViewController {
         let button = UIButton(type: .system)
         button.backgroundColor = UIColor(red: 80/255, green: 101/255, blue: 161/255, alpha: 0.35)
         button.setTitle("Register", for: UIControlState())
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: UIControlState())
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
         
         return button
@@ -148,24 +161,6 @@ class LoginController: UIViewController {
         } else {
             handleRegister()
         }
-    }
-    
-    func handleLogin() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else {
-            errorLabel.text = "Form is not valid. Authentication failed."
-            return
-        }
-        
-        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
-            
-            if error != nil {
-                self.errorLabel.text = "The email or password entered was incorrect."
-                return
-            }
-            //  Successfully logged in User
-            self.messagesController?.fetchUserAndSetNavBarTitle()
-            self.dismiss(animated: true, completion: nil)
-        })
     }
     
     let errorLabel: UILabel = {
