@@ -16,7 +16,7 @@ class LoginController: UIViewController {
     
     let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "background")
+        imageView.image = #imageLiteral(resourceName: "background")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -35,9 +35,9 @@ class LoginController: UIViewController {
     
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "InsertImage")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = #imageLiteral(resourceName: "InsertImage")
         imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImage)))
         imageView.isUserInteractionEnabled = true
         
@@ -46,9 +46,9 @@ class LoginController: UIViewController {
     
     lazy var loginRegisterSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["Login", "Register"])
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.tintColor = UIColor.white
         segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
         
         return segmentedControl
@@ -61,6 +61,7 @@ class LoginController: UIViewController {
         
         userInputContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
         
+        // MARK: BUG FOR NAME TEXTFIELD WILL BE HERE!!!!!!!!!!!
         nameTextFieldHeightAnchor?.isActive = false
         nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
         nameTextField.placeholder = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? "" : "Name"
@@ -78,9 +79,9 @@ class LoginController: UIViewController {
     let userInputContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
