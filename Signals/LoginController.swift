@@ -166,11 +166,11 @@ class LoginController: UIViewController {
     
     // MARK: UI Height Constraint Reference Variables
     var userInputContainerViewHeightAnchor: NSLayoutConstraint?
+    var nameSeparatorViewHeightAnchor: NSLayoutConstraint?
     var nameTextFieldHeightAnchor: NSLayoutConstraint?
     var emailTextFieldHeightAnchor: NSLayoutConstraint?
     var passwordTextFieldHeightAnchor: NSLayoutConstraint?
     
-    // MARK: iOS9 Constraint Anchors
     // x, y, width, height
     func setupBackgroundImageView() {
         backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -50).isActive = true
@@ -204,7 +204,7 @@ class LoginController: UIViewController {
         userInputContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         userInputContainerView.topAnchor.constraint(equalTo: loginRegisterSegmentedControl.bottomAnchor, constant: 12).isActive = true
         userInputContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        userInputContainerViewHeightAnchor = userInputContainerView.heightAnchor.constraint(equalToConstant: 152)
+        userInputContainerViewHeightAnchor = userInputContainerView.heightAnchor.constraint(equalToConstant: 150)
         userInputContainerViewHeightAnchor?.isActive = true
         
         userInputContainerView.addSubview(nameTextField)
@@ -222,7 +222,8 @@ class LoginController: UIViewController {
         nameSeparatorView.leftAnchor.constraint(equalTo: userInputContainerView.leftAnchor, constant: 12).isActive = true
         nameSeparatorView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
         nameSeparatorView.widthAnchor.constraint(equalTo: userInputContainerView.widthAnchor, constant: -24).isActive = true
-        nameSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        nameSeparatorViewHeightAnchor = nameSeparatorView.heightAnchor.constraint(equalToConstant: 1)
+        nameSeparatorViewHeightAnchor?.isActive = true
         
         emailTextField.leftAnchor.constraint(equalTo: userInputContainerView.leftAnchor, constant: 12).isActive = true
         emailTextField.topAnchor.constraint(equalTo: nameSeparatorView.bottomAnchor).isActive = true

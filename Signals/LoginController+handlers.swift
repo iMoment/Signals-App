@@ -31,7 +31,13 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         // MARK: BUG FOR NAME TEXTFIELD WILL BE HERE!!!!!!!!!!!
         nameTextFieldHeightAnchor?.isActive = false
         nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
+        nameTextField.isHidden = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? true : false
         nameTextFieldHeightAnchor?.isActive = true
+        
+        nameSeparatorViewHeightAnchor?.isActive = false
+        nameSeparatorViewHeightAnchor = nameSeparatorView.heightAnchor.constraint(equalToConstant: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1)
+        nameSeparatorView.isHidden = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? true : false
+        nameSeparatorViewHeightAnchor?.isActive = true
         
         emailTextFieldHeightAnchor?.isActive = false
         emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
@@ -52,14 +58,14 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     
     func handleLogin() {
         guard let email = emailTextField.text, let password = passwordTextField.text else {
-            fadeLabelInAndOut(label: errorLabel, delay: 3, message: "Form is not valid. Authentication failed.")
+            fadeLabelInAndOut(label: errorLabel, delay: 2, message: "Form is not valid. Authentication failed.")
             return
         }
         
         FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
             
             if error != nil {
-                self.fadeLabelInAndOut(label: self.errorLabel, delay: 3, message: "The email or password entered is incorrect.")
+                self.fadeLabelInAndOut(label: self.errorLabel, delay: 2, message: "The email or password entered is incorrect.")
                 self.dismissKeyboard()
                 return
             }
@@ -72,14 +78,14 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     func handleRegister() {
         
         guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
-            fadeLabelInAndOut(label: errorLabel, delay: 3, message: "Form is not valid. Authentication failed.")
+            fadeLabelInAndOut(label: errorLabel, delay: 2, message: "Form is not valid. Authentication failed.")
             return
         }
         
         FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error) in
             
             if error != nil {
-                self.fadeLabelInAndOut(label: self.errorLabel, delay: 3, message: "Please fill in all fields.")
+                self.fadeLabelInAndOut(label: self.errorLabel, delay: 2, message: "Please fill in all fields.")
                 self.dismissKeyboard()
                 return
             }
