@@ -28,7 +28,6 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         
         userInputContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
         
-        // MARK: BUG FOR NAME TEXTFIELD WILL BE HERE!!!!!!!!!!!
         nameTextFieldHeightAnchor?.isActive = false
         nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
         nameTextField.isHidden = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? true : false
@@ -180,25 +179,3 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         view.endEditing(true)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -17,7 +17,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var user: User? {
         didSet {
             navigationItem.title = user?.name
-//            observeMessages()
+            observeMessages()
         }
     }
     
@@ -70,12 +70,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.keyboardDismissMode = .interactive
         
         setupKeyboardObservers()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        observeMessages()
     }
     
     lazy var inputContainerView: ChatInputContainerView = {

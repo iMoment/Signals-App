@@ -171,7 +171,6 @@ class LoginController: UIViewController {
     var emailTextFieldHeightAnchor: NSLayoutConstraint?
     var passwordTextFieldHeightAnchor: NSLayoutConstraint?
     
-    // x, y, width, height
     func setupBackgroundImageView() {
         backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -50).isActive = true
         backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 50).isActive = true
