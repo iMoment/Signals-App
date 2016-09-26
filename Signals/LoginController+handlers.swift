@@ -52,14 +52,14 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     
     func handleLogin() {
         guard let email = emailTextField.text, let password = passwordTextField.text else {
-            errorLabel.text = "Form is not valid. Authentication failed."
+            fadeLabelInAndOut(label: errorLabel, delay: 3, message: "Form is not valid. Authentication failed.")
             return
         }
         
         FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
             
             if error != nil {
-                self.errorLabel.text = "The email or password entered was incorrect."
+                self.fadeLabelInAndOut(label: self.errorLabel, delay: 3, message: "The email or password entered is incorrect.")
                 self.dismissKeyboard()
                 return
             }
@@ -72,14 +72,14 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     func handleRegister() {
         
         guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
-            errorLabel.text = "Form is not valid. Authentication failed."
+            fadeLabelInAndOut(label: errorLabel, delay: 3, message: "Form is not valid. Authentication failed.")
             return
         }
         
         FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error) in
             
             if error != nil {
-                self.errorLabel.text = "Please fill in all fields."
+                self.fadeLabelInAndOut(label: self.errorLabel, delay: 3, message: "Please fill in all fields.")
                 self.dismissKeyboard()
                 return
             }
@@ -108,6 +108,17 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 })
             }
         })
+    }
+    
+    func fadeLabelInAndOut(label: UILabel, delay: TimeInterval, message: String) {
+        UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseInOut, animations: {
+            label.alpha = 1
+            label.text = message
+            }) { (Bool) in
+                UIView.animate(withDuration: 0.5, delay: delay, options: .curveEaseInOut, animations: { 
+                    label.alpha = 0
+                }, completion: nil)
+        }
     }
     
     fileprivate func registerUserIntoDatabaseWithUID(_ uid: String, values: [String:AnyObject]) {
