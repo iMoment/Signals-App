@@ -37,9 +37,9 @@ class LoginController: UIViewController {
         let imageView = UIImageView()
         imageView.image = #imageLiteral(resourceName: "InsertImage")
         imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImage)))
         imageView.isUserInteractionEnabled = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
     }()
@@ -48,32 +48,11 @@ class LoginController: UIViewController {
         let segmentedControl = UISegmentedControl(items: ["Login", "Register"])
         segmentedControl.tintColor = UIColor.white
         segmentedControl.selectedSegmentIndex = 1
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         
         return segmentedControl
     }()
-    
-    //  Toggles userInputContainerView according to loginRegisterSegmentedControl value
-    func handleLoginRegisterChange() {
-        let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
-        loginRegisterButton.setTitle(title, for: UIControlState())
-        
-        userInputContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
-        
-        // MARK: BUG FOR NAME TEXTFIELD WILL BE HERE!!!!!!!!!!!
-        nameTextFieldHeightAnchor?.isActive = false
-        nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
-        nameTextFieldHeightAnchor?.isActive = true
-        
-        emailTextFieldHeightAnchor?.isActive = false
-        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        emailTextFieldHeightAnchor?.isActive = true
-        
-        passwordTextFieldHeightAnchor?.isActive = false
-        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: userInputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        passwordTextFieldHeightAnchor?.isActive = true
-    }
     
     let userInputContainerView: UIView = {
         let view = UIView()
@@ -126,8 +105,8 @@ class LoginController: UIViewController {
         textField.placeholder = "Password"
         textField.textColor = .white
         textField.delegate = self
-        textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isSecureTextEntry = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
     }()
@@ -138,19 +117,11 @@ class LoginController: UIViewController {
         button.setTitle("Register", for: UIControlState())
         button.setTitleColor(UIColor.white, for: UIControlState())
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
     }()
-    
-    func handleLoginRegister() {
-        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
-            handleLogin()
-        } else {
-            handleRegister()
-        }
-    }
     
     let errorLabel: UILabel = {
         let label = UILabel()
@@ -191,6 +162,7 @@ class LoginController: UIViewController {
         setupErrorLabel()
     }
     
+    // MARK: Everything good up til here.
     // MARK: UI Height Constraint Reference Variables
     var userInputContainerViewHeightAnchor: NSLayoutConstraint?
     var nameTextFieldHeightAnchor: NSLayoutConstraint?
