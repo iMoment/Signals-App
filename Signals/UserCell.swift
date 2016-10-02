@@ -75,6 +75,9 @@ class UserCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+//        self.backgroundColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
+//        self.textLabel?.textColor = .white
+//        self.detailTextLabel?.textColor = .white
         
         addSubview(profileImageView)
         addSubview(timeLabel)

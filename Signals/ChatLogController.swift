@@ -44,7 +44,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 
                 DispatchQueue.main.async(execute: {
                     self.collectionView?.reloadData()
-                    
+                   
                     let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
                     
                     self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
@@ -66,6 +66,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
 //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.white
+//        collectionView?.backgroundColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.keyboardDismissMode = .interactive
         
