@@ -174,9 +174,9 @@
 			isa = PBXGroup;
 			children = (
 				9166B9FC1D607BF9003475B6 /* LoginController.swift */,
+				91B6B8BB1D61DD1100AB9BFF /* LoginController+handlers.swift */,
 				9166B9CF1D607461003475B6 /* MessagesController.swift */,
 				91C9F4541D61C73A009752E8 /* NewMessageController.swift */,
-				91B6B8BB1D61DD1100AB9BFF /* LoginController+handlers.swift */,
 				918B15511D63229E00A38B48 /* ChatLogController.swift */,
 			);
 			name = Controller;

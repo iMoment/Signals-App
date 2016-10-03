@@ -5,7 +5,7 @@
 //  Created by Stanley Pan on 8/15/16.
 //  Copyright © 2016 Stanley Pan. All rights reserved.
 //
-//  LoginController extension holding key functions
+//  LoginController extension holding handle functions and other extensions
 
 import UIKit
 import Firebase
@@ -14,7 +14,6 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     
     func handleSelectProfileImage() {
         let picker = UIImagePickerController()
-        
         picker.delegate = self
         picker.allowsEditing = true
         
@@ -48,16 +47,11 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }
     
     func handleLoginRegister() {
-        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
-            handleLogin()
-        } else {
-            handleRegister()
-        }
+        loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? handleLogin() : handleRegister()
     }
     
     func handleLogin() {
         guard let email = emailTextField.text, let password = passwordTextField.text else {
-            fadeLabelInAndOut(label: errorLabel, delay: 2, message: "Form is not valid. Authentication failed.")
             return
         }
         
@@ -177,5 +171,25 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     
     func dismissKeyboard() {
         view.endEditing(true)
+    }
+}
+
+extension UIImage {
+    
+    func alphaChange(value: CGFloat) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(at: .zero, blendMode: .normal, alpha: value)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
+}
+
+// MARK: UIColor Extension
+extension UIColor {
+    
+    convenience init(r: CGFloat, g: CGFloat, b: CGFloat) {
+        self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)
     }
 }

@@ -12,6 +12,7 @@ import Firebase
 
 class LoginController: UIViewController {
     
+    // MARK: Properties
     var messagesController: MessagesController?
     
     let backgroundImageView: UIImageView = {
@@ -35,8 +36,10 @@ class LoginController: UIViewController {
     
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = #imageLiteral(resourceName: "InsertImage")
+        imageView.image = #imageLiteral(resourceName: "InsertImage").alphaChange(value: 0.75)
         imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 50
+        imageView.layer.masksToBounds = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImage)))
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -171,6 +174,7 @@ class LoginController: UIViewController {
     var emailTextFieldHeightAnchor: NSLayoutConstraint?
     var passwordTextFieldHeightAnchor: NSLayoutConstraint?
     
+    // MARK: UI Constraint Setup Functions
     func setupBackgroundImageView() {
         backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -50).isActive = true
         backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 50).isActive = true
@@ -271,15 +275,7 @@ class LoginController: UIViewController {
         view.addMotionEffect(group)
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-    }
-}
-
-// MARK: UIColor Extension
-extension UIColor {
-    
-    convenience init(r: CGFloat, g: CGFloat, b: CGFloat) {
-        self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)
     }
 }
