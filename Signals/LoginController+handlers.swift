@@ -51,6 +51,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }
     
     func handleLogin() {
+        
         guard let email = emailTextField.text, let password = passwordTextField.text else {
             return
         }
@@ -62,7 +63,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 self.dismissKeyboard()
                 return
             }
-            //  Successfully logged in User
+            //  Successfully logged in user
             self.messagesController?.fetchUserAndSetNavBarTitle()
             self.dismiss(animated: true, completion: nil)
         })
@@ -71,7 +72,6 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     func handleRegister() {
         
         guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
-            fadeLabelInAndOut(label: errorLabel, delay: 2, message: "Form is not valid. Authentication failed.")
             return
         }
         
@@ -87,7 +87,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 return
             }
             
-            // Successfully authenticated user
+            // Successfully created user
             let imageName = UUID().uuidString
             let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
