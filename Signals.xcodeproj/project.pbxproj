@@ -71,6 +71,7 @@
 		9166B9ED1D607461003475B6 /* SignalsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalsUITests.swift; sourceTree = "<group>"; };
 		9166B9EF1D607461003475B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9166B9FC1D607BF9003475B6 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		916929C01DB6163800CFEC39 /* Signals.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Signals.entitlements; sourceTree = "<group>"; };
 		9181600F1D636E8800EB99F0 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		918B15511D63229E00A38B48 /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		918B15531D63456200A38B48 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -138,6 +139,7 @@
 		9166B9CC1D607461003475B6 /* Signals */ = {
 			isa = PBXGroup;
 			children = (
+				916929C01DB6163800CFEC39 /* Signals.entitlements */,
 				9181600E1D636E4C00EB99F0 /* View */,
 				91B6B8BD1D621A7B00AB9BFF /* Helpers */,
 				91C9F4561D61D08D009752E8 /* Model */,
@@ -311,6 +313,11 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = P48JT8XFF3;
 						LastSwiftMigration = 0800;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					9166B9DD1D607461003475B6 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -680,6 +687,7 @@
 			baseConfigurationReference = 7CE52AC049D953CFF96F0FA8 /* Pods-Signals.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Signals/Signals.entitlements;
 				INFOPLIST_FILE = Signals/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.iMoment.Signals;
@@ -693,6 +701,7 @@
 			baseConfigurationReference = E9079AC4B9D6676B6FC9BF15 /* Pods-Signals.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Signals/Signals.entitlements;
 				INFOPLIST_FILE = Signals/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.iMoment.Signals;

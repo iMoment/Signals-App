@@ -346,7 +346,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let childRef = ref.childByAutoId()
         let toId = user!.id!
         let fromId = FIRAuth.auth()!.currentUser!.uid
-        let timestamp: NSNumber = NSNumber(value: Int(Date().timeIntervalSince1970))
+        let timestamp = NSNumber(value: Int(Date().timeIntervalSince1970))
         
         var values: [String: AnyObject] = ["recipientID": toId as AnyObject, "senderID": fromId as AnyObject, "timestamp": timestamp]
         properties.forEach({values[$0] = $1})

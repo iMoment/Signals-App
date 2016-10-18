@@ -138,7 +138,7 @@ class MessagesController: UITableViewController {
             self.tableView.reloadData()
         })
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
