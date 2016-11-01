@@ -3,10 +3,11 @@
 
 target 'Signals' do
   use_frameworks!
-  
+
 pod 'Firebase/Database'
 pod 'Firebase/Auth'
 pod 'Firebase/Storage'
+pod 'Shimmer'
 
 end
 

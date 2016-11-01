@@ -9,6 +9,7 @@
 
 import UIKit
 import Firebase
+import Shimmer
 
 class LoginController: UIViewController {
     
@@ -22,6 +23,13 @@ class LoginController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
+    }()
+    
+    let shimmeringView: FBShimmeringView = {
+        let view = FBShimmeringView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
     }()
     
     let appNameLabel: UILabel = {
@@ -143,6 +151,7 @@ class LoginController: UIViewController {
         hideKeyboard()
         
         applyMotionEffect(toView: backgroundImageView, magnitude: 10)
+        applyMotionEffect(toView: shimmeringView, magnitude: -30)
         applyMotionEffect(toView: appNameLabel, magnitude: -30)
         applyMotionEffect(toView: profileImageView, magnitude: -30)
         applyMotionEffect(toView: loginRegisterSegmentedControl, magnitude: -30)
@@ -151,6 +160,7 @@ class LoginController: UIViewController {
         applyMotionEffect(toView: errorLabel, magnitude: -30)
         
         view.addSubview(backgroundImageView)
+        view.addSubview(shimmeringView)
         view.addSubview(appNameLabel)
         view.addSubview(profileImageView)
         view.addSubview(loginRegisterSegmentedControl)
@@ -159,12 +169,16 @@ class LoginController: UIViewController {
         view.addSubview(errorLabel)
         
         setupBackgroundImageView()
+        setupShimmeringView()
         setupAppNameLabel()
         setupProfileImageView()
         setupLoginRegisterSegmentedControl()
         setupUserInputContainerView()
         setupLoginRegisterButton()
         setupErrorLabel()
+        
+        self.shimmeringView.contentView = appNameLabel
+        self.shimmeringView.isShimmering = true
     }
     
     // MARK: UI Height Constraint Reference Variables
@@ -180,6 +194,13 @@ class LoginController: UIViewController {
         backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 50).isActive = true
         backgroundImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -50).isActive = true
         backgroundImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 50).isActive = true
+    }
+    
+    func setupShimmeringView() {
+        shimmeringView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        shimmeringView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
+        shimmeringView.widthAnchor.constraint(equalToConstant: 168).isActive = true
+        shimmeringView.heightAnchor.constraint(equalToConstant: 136).isActive = true
     }
 
     func setupAppNameLabel() {
