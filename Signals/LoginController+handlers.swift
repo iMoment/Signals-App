@@ -112,15 +112,15 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     func handleAnimateStars() {
         for _ in 0...40 {
             let whiteSquareStar = UIView()
-            whiteSquareStar.frame = CGRect(x: 55, y: 300, width: 2, height: 2)
+            whiteSquareStar.frame = CGRect(x: 0, y: 0, width: 1.5, height: 1.5)
             whiteSquareStar.backgroundColor = .white
             self.view.addSubview(whiteSquareStar)
             
             let randomYOffset = CGFloat(arc4random_uniform(125))
             
             let path = UIBezierPath()
-            path.move(to: CGPoint(x: 16,y: 55 + randomYOffset))
-            path.addCurve(to: CGPoint(x: view.frame.size.width, y: 75 + randomYOffset), controlPoint1: CGPoint(x: 136, y: 275 + randomYOffset), controlPoint2: CGPoint(x: 178, y: -20 + randomYOffset))
+            path.move(to: CGPoint(x: 0,y: 55 + randomYOffset))
+            path.addCurve(to: CGPoint(x: view.frame.size.width, y: 75 + randomYOffset), controlPoint1: CGPoint(x: 138, y: 270 + randomYOffset), controlPoint2: CGPoint(x: 276, y: -100 + randomYOffset))
             
             let animation = CAKeyframeAnimation(keyPath: "position")
             animation.path = path.cgPath
