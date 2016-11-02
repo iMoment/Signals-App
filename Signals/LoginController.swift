@@ -27,6 +27,7 @@ class LoginController: UIViewController {
     
     let shimmeringView: FBShimmeringView = {
         let view = FBShimmeringView()
+        view.shimmeringPauseDuration = 2.0
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -181,6 +182,13 @@ class LoginController: UIViewController {
         self.shimmeringView.isShimmering = true
     }
     
+    // MARK: viewDidAppear
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        handleAnimateStars()
+    }
+    
     // MARK: UI Height Constraint Reference Variables
     var userInputContainerViewHeightAnchor: NSLayoutConstraint?
     var nameSeparatorViewHeightAnchor: NSLayoutConstraint?
@@ -199,14 +207,14 @@ class LoginController: UIViewController {
     func setupShimmeringView() {
         shimmeringView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         shimmeringView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
-        shimmeringView.widthAnchor.constraint(equalToConstant: 168).isActive = true
+        shimmeringView.widthAnchor.constraint(equalToConstant: 186).isActive = true
         shimmeringView.heightAnchor.constraint(equalToConstant: 136).isActive = true
     }
 
     func setupAppNameLabel() {
         appNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         appNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
-        appNameLabel.widthAnchor.constraint(equalToConstant: 168).isActive = true
+        appNameLabel.widthAnchor.constraint(equalToConstant: 186).isActive = true
         appNameLabel.heightAnchor.constraint(equalToConstant: 136).isActive = true
     }
     
