@@ -25,12 +25,12 @@ class LoginController: UIViewController {
         return imageView
     }()
     
-    let shimmeringView: FBShimmeringView = {
-        let view = FBShimmeringView()
-        view.shimmeringPauseDuration = 2.0
-        view.translatesAutoresizingMaskIntoConstraints = false
+    let appLabelShimmeringView: FBShimmeringView = {
+        let shimmeringView = FBShimmeringView()
+        shimmeringView.shimmeringPauseDuration = 2.0
+        shimmeringView.translatesAutoresizingMaskIntoConstraints = false
         
-        return view
+        return shimmeringView
     }()
     
     let appNameLabel: UILabel = {
@@ -58,7 +58,7 @@ class LoginController: UIViewController {
     
     lazy var loginRegisterSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["Login", "Register"])
-        segmentedControl.tintColor = UIColor.white
+        segmentedControl.tintColor = .white
         segmentedControl.selectedSegmentIndex = 1
         segmentedControl.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
@@ -127,8 +127,8 @@ class LoginController: UIViewController {
         let button = UIButton(type: .system)
         button.backgroundColor = UIColor(red: 80/255, green: 101/255, blue: 161/255, alpha: 0.35)
         button.setTitle("Register", for: UIControlState())
-        button.setTitleColor(UIColor.white, for: UIControlState())
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.setTitleColor(.white, for: UIControlState())
+        button.titleLabel?.font = .boldSystemFont(ofSize: 18)
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
         button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
@@ -140,7 +140,7 @@ class LoginController: UIViewController {
     let errorLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = UIColor.white
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -152,7 +152,7 @@ class LoginController: UIViewController {
         hideKeyboard()
         
         applyMotionEffect(toView: backgroundImageView, magnitude: 10)
-        applyMotionEffect(toView: shimmeringView, magnitude: -30)
+        applyMotionEffect(toView: appLabelShimmeringView, magnitude: -30)
         applyMotionEffect(toView: appNameLabel, magnitude: -30)
         applyMotionEffect(toView: profileImageView, magnitude: -30)
         applyMotionEffect(toView: loginRegisterSegmentedControl, magnitude: -30)
@@ -161,7 +161,7 @@ class LoginController: UIViewController {
         applyMotionEffect(toView: errorLabel, magnitude: -30)
         
         view.addSubview(backgroundImageView)
-        view.addSubview(shimmeringView)
+        view.addSubview(appLabelShimmeringView)
         view.addSubview(appNameLabel)
         view.addSubview(profileImageView)
         view.addSubview(loginRegisterSegmentedControl)
@@ -170,7 +170,7 @@ class LoginController: UIViewController {
         view.addSubview(errorLabel)
         
         setupBackgroundImageView()
-        setupShimmeringView()
+        setupAppLabelShimmeringView()
         setupAppNameLabel()
         setupProfileImageView()
         setupLoginRegisterSegmentedControl()
@@ -178,8 +178,8 @@ class LoginController: UIViewController {
         setupLoginRegisterButton()
         setupErrorLabel()
         
-        self.shimmeringView.contentView = appNameLabel
-        self.shimmeringView.isShimmering = true
+        self.appLabelShimmeringView.contentView = appNameLabel
+        self.appLabelShimmeringView.isShimmering = true
     }
     
     // MARK: viewDidAppear
@@ -204,11 +204,11 @@ class LoginController: UIViewController {
         backgroundImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 50).isActive = true
     }
     
-    func setupShimmeringView() {
-        shimmeringView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        shimmeringView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
-        shimmeringView.widthAnchor.constraint(equalToConstant: 186).isActive = true
-        shimmeringView.heightAnchor.constraint(equalToConstant: 136).isActive = true
+    func setupAppLabelShimmeringView() {
+        appLabelShimmeringView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        appLabelShimmeringView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
+        appLabelShimmeringView.widthAnchor.constraint(equalToConstant: 186).isActive = true
+        appLabelShimmeringView.heightAnchor.constraint(equalToConstant: 136).isActive = true
     }
 
     func setupAppNameLabel() {
