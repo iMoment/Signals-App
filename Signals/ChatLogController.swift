@@ -43,7 +43,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     DispatchQueue.main.async(execute: {
                         self.messages.append(Message(dictionary: dictionary))
                         self.collectionView?.reloadData()
-                        var indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                        let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
                         self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                     })
                     
@@ -278,14 +278,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         if message.senderID == FIRAuth.auth()?.currentUser?.uid {
             //  Message will be blue bubbleView
             cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
-            cell.chatTextView.textColor = UIColor.white
+            cell.chatTextView.textColor = .white
             cell.profileImageView.isHidden = true
             cell.bubbleRightAnchor?.isActive = true
             cell.bubbleLeftAnchor?.isActive = false
         } else {
             //  Message will be grey bubbleView
             cell.bubbleView.backgroundColor = UIColor(r: 240, g: 240, b: 240)
-            cell.chatTextView.textColor = UIColor.black
+            cell.chatTextView.textColor = .black
             cell.profileImageView.isHidden = false
             cell.bubbleRightAnchor?.isActive = false
             cell.bubbleLeftAnchor?.isActive = true
@@ -294,7 +294,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         if let messageImageUrl = message.imageUrl {
             cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageUrl)
             cell.messageImageView.isHidden = false
-            cell.bubbleView.backgroundColor = UIColor.clear
+            cell.bubbleView.backgroundColor = .clear
         } else {
             cell.messageImageView.isHidden = true
         }
@@ -399,7 +399,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 
                 self.blackBackgroundView?.alpha = 1
                 self.inputContainerView.alpha = 0
-                // TODO: Zoom to proper scale
+                // Zoom to proper scale
                 let height = self.startingFrame!.height / self.startingFrame!.width * keyWindow.frame.width
                 
                 
@@ -407,14 +407,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 zoomingImageView.center = keyWindow.center
                 
                 }, completion: { (completed) in
-//                    do nothing
+//                    Do nothing
             })
         }
     }
     
     func handleZoomOut(_ tapGesture: UITapGestureRecognizer) {
         if let zoomedOutImageView = tapGesture.view {
-            // TODO: Need to animate back out to controller
+            // Animate back out to controller
             zoomedOutImageView.layer.cornerRadius = 16
             zoomedOutImageView.clipsToBounds = true
             
