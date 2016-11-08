@@ -22,38 +22,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     var messages = [Message]()
-//    var indexPath: IndexPath?
-    
-//    func observeMessages() {
-//        guard let uid = FIRAuth.auth()?.currentUser?.uid, let toId = user?.id else {
-//            return
-//        }
-//        
-//        let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(uid).child(toId)
-//        userMessagesRef.observe(.childAdded, with: { (snapshot) in
-//            
-//            let messageId = snapshot.key
-//            let messagesRef = FIRDatabase.database().reference().child("messages").child(messageId)
-//            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-//                
-//                guard let dictionary = snapshot.value as? [String: AnyObject] else {
-//                    return
-//                }
-//                
-//                self.messages.append(Message(dictionary: dictionary))
-//                
-//                DispatchQueue.main.async(execute: {
-//                    self.collectionView?.reloadData()
-//                   
-//                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-//                    
-//                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-//                })
-//                
-//            }, withCancel: nil)
-//            
-//        }, withCancel: nil)
-//    }
+
     func observeMessages() {
         DispatchQueue.global(qos: .background).async {
             guard let uid = FIRAuth.auth()?.currentUser?.uid, let toId = self.user?.id else {
@@ -71,9 +40,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     return
                 }
                 
-                self.messages.append(Message(dictionary: dictionary))
-                    
                     DispatchQueue.main.async(execute: {
+                        self.messages.append(Message(dictionary: dictionary))
                         self.collectionView?.reloadData()
                         var indexPath = IndexPath(item: self.messages.count - 1, section: 0)
                         self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)

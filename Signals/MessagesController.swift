@@ -129,12 +129,16 @@ class MessagesController: UITableViewController {
     var timer: Timer?
     
     func handleReloadTable() {
-        self.messages = Array(self.messageDictionary.values)
-        self.messages.sort(by: { (message1, message2) -> Bool in
-            return message1.timestamp?.int32Value > message2.timestamp?.int32Value
-        })
+//        self.messages = Array(self.messageDictionary.values)
+//        self.messages.sort(by: { (message1, message2) -> Bool in
+//            return message1.timestamp?.int32Value > message2.timestamp?.int32Value
+//        })
         
         DispatchQueue.main.async(execute: {
+            self.messages = Array(self.messageDictionary.values)
+            self.messages.sort(by: { (message1, message2) -> Bool in
+                return message1.timestamp?.int32Value > message2.timestamp?.int32Value
+            })
             self.tableView.reloadData()
         })
     }

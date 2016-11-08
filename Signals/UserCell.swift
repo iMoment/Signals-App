@@ -16,7 +16,13 @@ class UserCell: UITableViewCell {
         didSet {
             setupNameAndProfileImage()
             
-            detailTextLabel?.text = message?.text
+            if message?.videoUrl != nil {
+                detailTextLabel?.text = "Video was sent..."
+            } else if message?.imageUrl != nil {
+                detailTextLabel?.text = "Photo was sent..."
+            } else {
+                detailTextLabel?.text = message?.text
+            }
             
             if let seconds = message?.timestamp?.doubleValue {
                 let timestampDate = Date(timeIntervalSince1970: seconds)
@@ -51,15 +57,15 @@ class UserCell: UITableViewCell {
         
         textLabel?.frame = CGRect(x: 64, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width, height: textLabel!.frame.height)
         
-        detailTextLabel?.frame = CGRect(x: 64, y: detailTextLabel!.frame.origin.y + 2, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
+        detailTextLabel?.frame = CGRect(x: 64, y: detailTextLabel!.frame.origin.y + 2, width: self.frame.width - 100, height: detailTextLabel!.frame.height)
     }
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 24
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
     }()
