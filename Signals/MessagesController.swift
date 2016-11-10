@@ -151,12 +151,12 @@ class MessagesController: UITableViewController {
         }, withCancel: nil)
     }
     
+    var timer: Timer?
+    
     fileprivate func attemptReloadOfTable() {
         self.timer?.invalidate()
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
     }
-    
-    var timer: Timer?
     
     func handleReloadTable() {
 //        self.messages = Array(self.messageDictionary.values)
@@ -246,9 +246,11 @@ class MessagesController: UITableViewController {
     }
     
     func setupNavBarWithUser(_ user: User) {
-        messages.removeAll()
-        messageDictionary.removeAll()
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.messages.removeAll()
+            self.messageDictionary.removeAll()
+            self.tableView.reloadData()
+        }
         
         observeUserMessages()
         
@@ -302,6 +304,8 @@ class MessagesController: UITableViewController {
         
         do {
             try FIRAuth.auth()?.signOut()
+            self.messages.removeAll()
+            self.messageDictionary.removeAll()
         } catch let logoutError {
             print(logoutError)
         }
