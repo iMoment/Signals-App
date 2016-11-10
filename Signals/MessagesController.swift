@@ -48,6 +48,36 @@ class MessagesController: UITableViewController {
 //        tableView.backgroundColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        animateTable()
+    }
+    
+    // MARK: TableView DataSource
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func animateTable() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            let cells = self.tableView.visibleCells
+            let tableViewHeight = self.tableView.bounds.size.height
+            
+            for cell in cells {
+                cell.transform = CGAffineTransform(translationX: 0, y: tableViewHeight)
+            }
+            
+            var delayCounter = 0
+            for cell in cells {
+                UIView.animate(withDuration: 1.75, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                    cell.transform = CGAffineTransform.identity
+                }, completion: nil)
+                delayCounter += 1
+            }
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
