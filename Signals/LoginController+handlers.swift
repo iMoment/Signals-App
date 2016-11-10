@@ -63,6 +63,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 self.dismissKeyboard()
                 return
             }
+            
             //  Successfully logged in user
             self.messagesController?.fetchUserAndSetNavBarTitle()
             self.dismiss(animated: true, completion: nil)
@@ -110,38 +111,42 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }
     
     func handleAnimateStars() {
-        for _ in 0...40 {
-            let whiteSquareStar = UIView()
-            whiteSquareStar.frame = CGRect(x: 0, y: 0, width: 1.5, height: 1.5)
-            whiteSquareStar.backgroundColor = .white
-            self.view.addSubview(whiteSquareStar)
-            
-            let randomYOffset = CGFloat(arc4random_uniform(125))
-            
-            let path = UIBezierPath()
-            path.move(to: CGPoint(x: 0,y: 55 + randomYOffset))
-            path.addCurve(to: CGPoint(x: view.frame.size.width, y: 75 + randomYOffset), controlPoint1: CGPoint(x: 138, y: 270 + randomYOffset), controlPoint2: CGPoint(x: 276, y: -100 + randomYOffset))
-            
-            let animation = CAKeyframeAnimation(keyPath: "position")
-            animation.path = path.cgPath
-            animation.rotationMode = kCAAnimationRotateAuto
-            animation.repeatCount = Float.infinity
-            animation.duration = 5.0
-            animation.duration = Double(arc4random_uniform(40) + 30) / 10
-            animation.timeOffset = Double(arc4random_uniform(290))
-            
-            whiteSquareStar.layer.add(animation, forKey: "animate position along path")
+        DispatchQueue.main.async {
+            for _ in 0...40 {
+                let whiteSquareStar = UIView()
+                whiteSquareStar.frame = CGRect(x: 0, y: 0, width: 1.5, height: 1.5)
+                whiteSquareStar.backgroundColor = .white
+                self.view.addSubview(whiteSquareStar)
+                
+                let randomYOffset = CGFloat(arc4random_uniform(125))
+                
+                let path = UIBezierPath()
+                path.move(to: CGPoint(x: 0,y: 55 + randomYOffset))
+                path.addCurve(to: CGPoint(x: self.view.frame.size.width, y: 75 + randomYOffset), controlPoint1: CGPoint(x: 138, y: 270 + randomYOffset), controlPoint2: CGPoint(x: 276, y: -100 + randomYOffset))
+                
+                let animation = CAKeyframeAnimation(keyPath: "position")
+                animation.path = path.cgPath
+                animation.rotationMode = kCAAnimationRotateAuto
+                animation.repeatCount = Float.infinity
+                animation.duration = 5.0
+                animation.duration = Double(arc4random_uniform(40) + 30) / 10
+                animation.timeOffset = Double(arc4random_uniform(290))
+                
+                whiteSquareStar.layer.add(animation, forKey: "animate position along path")
+            }
         }
     }
     
     func fadeLabelInAndOut(label: UILabel, delay: TimeInterval, message: String) {
-        UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseInOut, animations: {
-            label.alpha = 1
-            label.text = message
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseInOut, animations: {
+                label.alpha = 1
+                label.text = message
             }) { (Bool) in
-                UIView.animate(withDuration: 0.5, delay: delay, options: .curveEaseInOut, animations: { 
+                UIView.animate(withDuration: 0.5, delay: delay, options: .curveEaseInOut, animations: {
                     label.alpha = 0
                 }, completion: nil)
+            }
         }
     }
     

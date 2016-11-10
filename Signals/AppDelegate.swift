@@ -13,10 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Replace Main.storyboard with own window
-        
+        // MARK: Replace Main.storyboard with own window
         FIRApp.configure()
         
         window = UIWindow(frame: UIScreen.main.bounds)
